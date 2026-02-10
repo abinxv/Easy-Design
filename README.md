@@ -16,6 +16,7 @@ To integrate AI-based image analysis for intelligent recommendations
 To provide an open-source and cost-free alternative to professional interior design tools
 
 Technology Stack (MERN-Focused)
+
 🔹 Frontend (React)
 React.js
 HTML, CSS
