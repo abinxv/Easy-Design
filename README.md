@@ -53,14 +53,15 @@ Locally hosted pretrained AI models deployed using Ollama for offline inference
 
 
 
-Project Overview
+🔹Project Overview
+
 The AI-Based Interior Design Recommendation System is a web application that allows users to upload an image of their room and receive personalized interior design suggestions. The application analyzes the uploaded image to identify the room type, dominant colors, and visible objects such as furniture and lighting.
 
 
 Based on the analysis, the system recommends appropriate color palettes, furniture types, and interior design styles such as modern, minimalist, etc. The platform aims to help users make informed design decisions without requiring professional interior design services and visualize beforehand.
 
 
-Core Features
+🔹Core Features
 
 
 User-friendly room image upload
@@ -84,7 +85,7 @@ Image analysis handled via backend AI service
 Secure storage of user data and design history
 
 
-System Workflow
+🔹System Workflow
 
 
 User uploads a room image through the React frontend
@@ -105,7 +106,7 @@ Backend formats the response
 Frontend displays design recommendations
 
 
-Identified Stakeholders
+🔹Identified Stakeholders
 1. End Users (Clients / Homeowners)
 
 
