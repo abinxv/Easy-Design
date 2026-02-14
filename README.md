@@ -45,8 +45,7 @@ OpenCV (image preprocessing and color extraction)
 Pretrained computer vision models for scene and object understanding
 
 
-Multimodal large language models for semantic interpretation and recommendation generation
-
+Multimodal llms for semantic interpretation and recommendation generation
 
 Locally hosted pretrained AI models deployed using Ollama for offline inference
 
