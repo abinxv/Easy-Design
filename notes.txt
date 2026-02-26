@@ -1,0 +1,3 @@
+env file - text file that stores sensitive data like api keys 
+and database credentials and passwords, etc
+
