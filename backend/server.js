@@ -1,53 +1,38 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const Design = require("./design");
-
-dotenv.config();
+const fs = require("fs");
 
 const app = express();
+const PORT = 5000;
 
-// Middleware
-app.use(cors());
+// IMPORTANT: to read JSON from frontend
 app.use(express.json());
 
-// Connect MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
-
-// POST route
-app.post("/api/design", async (req, res) => {
-  try {
-    const { style, colorTheme, budget, rooms } = req.body;
-
-    const newDesign = new Design({
-      style,
-      colorTheme,
-      budget,
-      rooms
-    });
-
-    await newDesign.save();
-
-    res.status(201).json({
-      message: "Preferences saved successfully",
-      data: newDesign
-    });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+// Test route
+app.get("/", (req, res) => {
+  res.send("Server running ✅");
 });
 
-// GET route (optional but useful for testing)
-app.get("/api/design", async (req, res) => {
-  const designs = await Design.find();
-  res.json(designs);
+// Checklist save route
+app.post("/save-checklist", (req, res) => {
+  const data = req.body;
+
+  const text = `
+User: ${data.user}
+Checked Items: ${data.checkedItems.join(", ")}
+Date: ${new Date().toLocaleString()}
+---------------------------------
+`;
+
+  fs.appendFile("checklist.txt", text, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Error saving checklist");
+    }
+
+    res.send("Checklist saved successfully ✅");
+  });
 });
 
-const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
