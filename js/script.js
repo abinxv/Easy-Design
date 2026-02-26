@@ -19,3 +19,4 @@ document.getElementById("designForm").addEventListener("submit", function(e) {
 
   alert("Preferences submitted! (Backend integration coming next)");
 });
+//comment
