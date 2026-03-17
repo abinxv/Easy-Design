@@ -1,36 +1,27 @@
 const express = require("express");
-const fs = require("fs");
+const cors = require("cors");
+require("dotenv").config();
+
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/auth");
+const designRoutes = require("./routes/designs");
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// IMPORTANT: to read JSON from frontend
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Test route
+// DB Connection
+connectDB();
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/designs", designRoutes);
+
 app.get("/", (req, res) => {
-  res.send("Server running ✅");
-});
-
-// Checklist save route
-app.post("/save-checklist", (req, res) => {
-  const data = req.body;
-
-  const text = `
-User: ${data.user}
-Checked Items: ${data.checkedItems.join(", ")}
-Date: ${new Date().toLocaleString()}
----------------------------------
-`;
-
-  fs.appendFile("checklist.txt", text, (err) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("Error saving checklist");
-    }
-
-    res.send("Checklist saved successfully ✅");
-  });
+  res.json({ message: "Easy-Design Backend running ✅" });
 });
 
 app.listen(PORT, () => {
