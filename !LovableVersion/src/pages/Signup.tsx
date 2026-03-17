@@ -61,12 +61,12 @@ const Signup = () => {
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">Name</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="name"
-                    placeholder="John Doe"
+                    placeholder="Enter your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="pl-10"
@@ -81,8 +81,8 @@ const Signup = () => {
                   <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
-                    type="email"
-                    placeholder="you@example.com"
+                    type="email" 
+                    placeholder="you@example.com" // regex
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
