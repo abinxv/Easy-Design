@@ -1,10 +1,5 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
-const Photo = require('./models/Photo');
+const { buildInspirations } = require("./utils/inspirationBuilder");
 
-const seedPhotos = async () => {
-  await mongoose.connect(process.env.MONGO_URI);
+const preview = buildInspirations("bedroom", ["Single Bed", "Bookshelf", "Study Table"]);
 
-  const samplePhotos = [
-    {
-      url: 'https://images.unsplash.com/photo-1558618047-3c8c76f5ebc6?w=800', // kitchen earthy
+console.log(JSON.stringify(preview, null, 2));
