@@ -23,9 +23,10 @@ const Footer = () => {
 
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com"
+              href={"https://github.com/abinxv/Easy-Design/"}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Open GitHub repository"
               className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-background/20 transition-colors"
             >
               <Github className="w-4 h-4 text-background/70" />
@@ -35,8 +36,9 @@ const Footer = () => {
 
         <div className="border-t border-background/10 mt-8 pt-8 text-center">
           <p className="text-sm text-background/40 font-body">
-            © 2026 EasyDesign. AI-powered interior design recommendations. Open source & free.
+            EasyDesign - AI-powered interior design recommendations.            
           </p>
+      
         </div>
       </div>
     </footer>
