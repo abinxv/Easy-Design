@@ -1,32 +1,37 @@
-# Backend Build ✅ COMPLETE
-    
-## Key Features Implemented:
+# Easy-Design TODO
 
-- **Auth**: Register/Login with JWT, password strength (Easy/Medium/Hard), regex validation, no username/DOB match
-- **Designs**: Save/fetch user designs (room, style, furniture, budget)
-- **Photo Search**: `/api/designs/photos/search` - tag matching for inspiration (limit 5)
-- **Models**: User, Design, Photo (tags), Analytics
-- **Security**: bcrypt, JWT, CORS
-- **Sample Data**: Run `node backend/seed-photos.js` after Mongo setup
+## Current Status
 
-## Setup & Run:
+- [x] Landing page, navigation, and style showcase are built
+- [x] User authentication works with register, login, session restore, and logout
+- [x] Room catalog is available for bedroom, kitchen, living room, bathroom, and office
+- [x] Analyze flow lets users choose a room and select furniture/decor items
+- [x] Backend generates Pinterest inspiration links based on room + item selection
+- [x] Logged-in users can save searches and view them in the dashboard
+- [x] MongoDB is connected for user accounts and saved design history
 
-1. MongoDB: Install local or use Atlas, copy `.env.example` → `.env` with MONGO_URI, JWT_SECRET
-2. Backend: `cd backend && npm run dev`
-3. Test endpoints (Postman/Thunder Client):
-   - POST /api/auth/register {email, username, password, dob}
-   - POST /api/designs/photos/search {room: "kitchen", style: "minimalist", furniture: ["island"]}
-4. Frontend: Add axios calls to LovableVersion/src (e.g., Analyze.tsx for search)
+## TODO
 
-## Git Auto-Update:
+- [ ] Add real room image upload instead of only manual room/item selection
+- [ ] Build actual AI/image-analysis support for uploaded room photos
+- [ ] Turn recommendations into richer outputs: style, palette, furniture, and layout reasoning
+- [ ] Let users reopen a saved design and view the full recommendation set again
+- [ ] Improve loading, empty, and error states across analyze, auth, and dashboard pages
 
-Run: `git init && git add . && git commit -m "feat: complete backend" && git remote add origin [repo-url] && git push`
-For auto-push: Use VSCode GitLens extension or GitHub Codespaces.
+## Next Milestone
 
-## Next: Frontend Integration
+- [ ] Add upload UI on the analyze page
+- [ ] Add backend file handling and image validation
+- [ ] Extract useful room signals from an uploaded image
+- [ ] Use those signals to generate smarter design suggestions
+- [ ] Save image-based recommendation sessions in the database
 
-- Login/Signup → store JWT
-- Analyze page: POST photo search → display images
-- Track visitors: window.onload/unload → POST /api/analytics/visit {sessionTime}
 
-Backend ready for production!
+## Features to add
+
+- [ ] Budget-aware recommendations
+- [ ] Compare multiple styles for the same room
+- [ ] Favorites or saved collections for inspiration sets
+- [ ] Shareable design links
+- [ ] Simple admin/analytics view if needed later
+
