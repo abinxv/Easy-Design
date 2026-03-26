@@ -9,9 +9,13 @@ There is a need for a simple and affordable platform that helps users explore ro
 
 Objectives:
 To build a web-based platform that helps users explore room design ideas in a simple guided flow
+
 To recommend room inspiration based on room type and selected furniture or decor items
+
 To allow users to create accounts and save their design history for later use
+
 To evolve the platform into an AI-assisted room analysis system using uploaded room images
+
 To provide an accessible and low-cost alternative for early-stage interior design planning
 
 
@@ -19,33 +23,44 @@ Technology Stack (MERN-Focused)
 
 
 Frontend (React)
+
 React with Vite and TypeScript
+
 Tailwind CSS and shadcn/ui components
-Framer Motion for animations
+
 React Router for page navigation
 
 
 Backend (Node.js & Express)
+
+
 Node.js
+
 Express.js
-REST APIs for authentication, room catalog, inspiration search, and saved designs
+
+REST APIs 
+
 JWT-based authentication
 
 
 Database (MongoDB)
-MongoDB with Mongoose
-Stores user accounts and saved design history
 
 
 AI & Image Processing
+
 Current status:
+
 The current build does not yet perform real computer vision or room-image analysis. Instead, it uses a guided recommendation flow where users choose a room type and preferred items, and the backend generates Pinterest inspiration searches from those selections.
 
 Planned next phase:
+
 Image upload support
+
 Room-photo analysis
+
 Color and object understanding
-Smarter recommendation generation using AI or computer vision services
+
+Smarter recommendation generation using AI 
 
 
 Project Overview
@@ -58,26 +73,40 @@ The platform also supports authentication and a personal dashboard. When users a
 Core Features
 
 User signup, login, logout, and session restore
+
 Room selection for multiple room categories
+
 Furniture and decor item selection inside each room flow
+
 Generated Pinterest inspiration links based on user choices
+
 Saved design history for logged-in users
+
 Responsive web interface with landing page, analyze page, styles page, and dashboard
+
 Backend API for auth, room catalog, inspiration generation, and history storage
 
 
 System Workflow
 
 User opens the web app and explores the landing page or design flow
+
 User selects a room type such as bedroom, kitchen, living room, bathroom, or office
+
 User chooses the furniture or decor items they want in that room
+
 Frontend sends the selection to the Node.js and Express backend
+
 Backend builds relevant inspiration results and returns them to the frontend
+
 If the user is logged in, the design session is stored in MongoDB
+
 Frontend displays inspiration cards and the user can revisit saved searches from the dashboard
 
 
 Identified Stakeholders
+
+
 1. End Users (Students, homeowners, renters, and anyone redesigning a room)
 
 Need quick, affordable design inspiration without hiring a professional at the start.
