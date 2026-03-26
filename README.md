@@ -1,207 +1,93 @@
 # Easy-Design
-AI Based Interior Design Recommendation System
-
+AI-based interior design recommendation system
 
 Problem Statement:
-Designing or redecorating a room requires professional expertise, aesthetic sense, and significant cost. Many individuals struggle to visualize how different furniture, color schemes, and interior styles would look in their own rooms. Existing interior design platforms often require paid consultations or advanced tools, making them inaccessible to students and budget-conscious users.
+Many people want to improve the look of their rooms, but they do not know where to start, what style fits their space, or how different furniture and decor choices will work together. Professional interior design help can be expensive, and many existing tools are either too complex, too costly, or not personalized enough for everyday users.
 
-
-There is a need for an affordable and intelligent system that can analyze a user’s room image and provide personalized interior design recommendations using modern web technologies and artificial intelligence.
+There is a need for a simple and affordable platform that helps users explore room design ideas, discover suitable furniture and decor combinations, and gradually move toward AI-assisted recommendations based on their own space.
 
 
 Objectives:
-To build a web-based application that analyzes room images uploaded by users
-To suggest suitable interior design ideas including furniture, color schemes, and décor styles
-To integrate AI-based image analysis for intelligent recommendations
-To provide an open-source and cost-free alternative to professional interior design tools
+To build a web-based platform that helps users explore room design ideas in a simple guided flow
+To recommend room inspiration based on room type and selected furniture or decor items
+To allow users to create accounts and save their design history for later use
+To evolve the platform into an AI-assisted room analysis system using uploaded room images
+To provide an accessible and low-cost alternative for early-stage interior design planning
 
 
 Technology Stack (MERN-Focused)
 
 
-🔹 Frontend (React)
-React.js
-HTML, CSS
+Frontend (React)
+React with Vite and TypeScript
+Tailwind CSS and shadcn/ui components
+Framer Motion for animations
+React Router for page navigation
 
 
-🔹 Backend (Node.js & Express)
+Backend (Node.js & Express)
 Node.js
 Express.js
-RESTful APIs
-Multer (image upload handling)
+REST APIs for authentication, room catalog, inspiration search, and saved designs
+JWT-based authentication
 
 
-🔹 Database (MongoDB)
-MongoDB
+Database (MongoDB)
+MongoDB with Mongoose
+Stores user accounts and saved design history
 
 
-🔹 AI & Image Processing
-Python (Flask / FastAPI microservice)
+AI & Image Processing
+Current status:
+The current build does not yet perform real computer vision or room-image analysis. Instead, it uses a guided recommendation flow where users choose a room type and preferred items, and the backend generates Pinterest inspiration searches from those selections.
 
+Planned next phase:
+Image upload support
+Room-photo analysis
+Color and object understanding
+Smarter recommendation generation using AI or computer vision services
 
-OpenCV (image preprocessing and color extraction)
 
+Project Overview
 
-Pretrained computer vision models for scene and object understanding
+Easy-Design is a web application that helps users discover interior design inspiration for different room types. Instead of starting from a blank page, users choose a room, select the furniture or decor items they want, and receive curated inspiration links that help them explore layouts, styling ideas, and color directions.
 
+The platform also supports authentication and a personal dashboard. When users are signed in, their design searches are saved so they can revisit previous ideas later. This makes the current project a practical guided recommendation system, while also serving as the foundation for a future AI-powered room analysis product.
 
-Multimodal llms for semantic interpretation and recommendation generation
 
-Locally hosted pretrained AI models deployed using Ollama for offline inference
+Core Features
 
+User signup, login, logout, and session restore
+Room selection for multiple room categories
+Furniture and decor item selection inside each room flow
+Generated Pinterest inspiration links based on user choices
+Saved design history for logged-in users
+Responsive web interface with landing page, analyze page, styles page, and dashboard
+Backend API for auth, room catalog, inspiration generation, and history storage
 
 
+System Workflow
 
-🔹Project Overview
+User opens the web app and explores the landing page or design flow
+User selects a room type such as bedroom, kitchen, living room, bathroom, or office
+User chooses the furniture or decor items they want in that room
+Frontend sends the selection to the Node.js and Express backend
+Backend builds relevant inspiration results and returns them to the frontend
+If the user is logged in, the design session is stored in MongoDB
+Frontend displays inspiration cards and the user can revisit saved searches from the dashboard
 
-The AI-Based Interior Design Recommendation System is a web application that allows users to upload an image of their room and receive personalized interior design suggestions. The application analyzes the uploaded image to identify the room type, dominant colors, and visible objects such as furniture and lighting.
 
+Identified Stakeholders
+1. End Users (Students, homeowners, renters, and anyone redesigning a room)
 
-Based on the analysis, the system recommends appropriate color palettes, furniture types, and interior design styles such as modern, minimalist, etc. The platform aims to help users make informed design decisions without requiring professional interior design services and visualize beforehand.
+Need quick, affordable design inspiration without hiring a professional at the start.
 
 
-🔹Core Features
+2. Interior Designers or Mentors
 
+Can use the platform as a lightweight idea-generation or consultation support tool.
 
-User-friendly room image upload
 
+3. Project Team / System Administrators
 
-AI-based room analysis
-
-
-Interior design style recommendations
-
-
-Furniture and color palette suggestions
-
-
-Responsive web interface
-
-
-Image analysis handled via backend AI service
-
-
-Secure storage of user data and design history
-
-
-🔹System Workflow
-
-
-User uploads a room image through the React frontend
-
-
-Image is sent to the Node.js backend
-
-
-Backend forwards image to AI microservice
-
-
-AI analyzes the image and returns design insights
-
-
-Backend formats the response
-
-
-Frontend displays design recommendations
-
-
-🔹Identified Stakeholders
-1. End Users (Clients / Homeowners)
-
-
-Role:
-Individuals who want interior design ideas for their rooms without professional consultation.
-
-
-Responsibilities & Actions:
-
-
-Upload room images
-
-
-View AI-generated interior design suggestions
-
-
-Browse recommended furniture, color palettes, and styles
-
-
-Save or revisit previous design recommendations
-
-
-Interaction with System:
-
-
-Interacts through the web interface (React frontend)
-
-
-Sends room images to the backend for analysis
-
-
-Receives AI-based design recommendations
-
-
-2. Interior Designers
-
-
-Role:
-Professional or semi-professional designers who use the platform to analyze rooms, provide enhanced suggestions, or assist clients digitally.
-
-
-Responsibilities & Actions:
-
-
-Analyze room images uploaded by users
-
-
-Preview AI-generated recommendations
-
-
-Provide custom design advice or improvements
-
-
-Use the platform as a decision-support tool
-
-
-Interaction with System:
-
-
-Access uploaded images and AI insights
-
-
-Add or modify design recommendations
-
-
-Suggest professional design alternatives
-
-
-3. System Administrator (us)
-
-
-Role:
-Manages system functionality and ensures smooth operation.
-
-
-Responsibilities & Actions:
-
-
-Manage user and designer accounts
-
-
-Monitor system performance
-
-
-Maintain AI service and database
-
-
-Interaction with System:
-
-
-Backend access for configuration and monitoring
-
-
-No direct interaction with design features
-
-
-
-
-
+Responsible for maintaining the frontend, backend, database, and future AI pipeline.
