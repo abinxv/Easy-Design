@@ -1,0 +1,679 @@
+[
+   {
+    "image":"images/black_bathroom_1.jpg",
+    "tags": ["modern", "bathroom","black"]
+   },
+   {
+    "image":"images/black_bathroom_2.jpg",
+    "tags": ["modern", "bathroom","black"]
+   },
+   {
+    "image":"images/black_bathroom_3.jpg",
+    "tags": ["modern", "bathroom","black"]
+   },
+   {
+    "image":"images/black_bathroom_4.jpg",
+    "tags": ["modern", "bathroom","black"]
+   },
+   {
+    "image":"images/black_bedroom_1.jpg",
+    "tags": ["modern", "bedroom","black"]
+   },
+   {
+    "image":"images/black_bedroom_2.jpg",
+    "tags": ["modern", "bedroom","black"]
+    },
+    {
+    "image":"images/black_bedroom_3.jpg",
+    "tags": ["modern", "bedroom","black"]
+    },
+    {
+    "image":"images/black_bedroom_4.jpg",
+    "tags": ["modern", "bedroom","black"]
+   },
+   {
+    "image":"images/black_kitchen_1.jpg",
+    "tags": ["modern", "kitchen","black"]
+   },
+   {
+    "image":"images/black_kitchen_2.jpg",
+    "tags": ["modern", "kitchen","black"]
+   },
+   {
+    "image":"images/black_kitchen_3.jpg",
+    "tags": ["modern", "kitchen","black"]
+   },
+   {
+    "image":"images/black_kitchen_4.jpg",
+    "tags": ["modern", "kitchen","black"]
+   },
+    {
+     "image":"images/black_living_room_1.jpg",
+     "tags": ["modern", "living room","black"]
+    },
+    {
+     "image":"images/black_living_room_2.jpg",
+     "tags": ["modern", "living room","black"]
+    },
+    {
+     "image":"images/black_living_room_3.jpg",
+     "tags": ["modern", "living room","black"]
+    },
+    {
+     "image":"images/black_living_room_4.jpg",
+     "tags": ["modern", "living room","black"]
+    },
+    {
+    "image":"images/black_home_office_1.jpg",
+     "tags": ["modern", "office","black"]
+        },
+       {
+        "image":"images/black_home_office_2.jpg",
+        "tags": ["modern", "office","black"]
+        },
+        {
+        "image":"images/black_home_office_3.jpg",
+        "tags": ["modern", "office","black"]
+        },
+       {
+        "image":"images/boho_bathroom_1.jpg",
+        "tags": ["boho", "bathroom","earthy tones"]
+        },
+        
+        {
+        "image":"images/boho_bathroom_2.jpg",
+        "tags": ["boho", "bathroom","earthy tones"]
+        },
+         {
+        "image":"images/boho_bathroom_3.jpg",
+        "tags": ["boho", "bathroom","earthy tones"]
+        },
+         {
+        "image":"images/boho_bathroom_4.jpg",
+        "tags": ["boho", "bathroom","earthy tones"]
+        }, 
+        {
+        "image":"images/boho_bedroom_plant_1.jpg",
+        "tags": ["boho", "bedroom","earthy tones"]
+        }, 
+        {
+        "image":"images/boho_bedroom_plant_2.jpg",
+        "tags": ["boho", "bedroom","earthy tones"]
+        }, 
+        {
+        "image":"images/boho_bedroom_plant_3.jpg",
+        "tags": ["boho", "bedroom","earthy tones"]
+        }, 
+        {
+        "image":"images/boho_bedroom_plant_4.jpg",
+        "tags": ["boho", "bedroom","earthy tones"]
+        },  
+         {
+        "image":"images/boho_dining_room_plant_1.jpg",
+        "tags": ["boho", "dining room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_dining_room_plant_2.jpg",
+        "tags": ["boho", "dining room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_dining_room_plant_3.jpg",
+        "tags": ["boho", "dining room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_green_living_room_1.jpg",
+        "tags": ["boho", "living room","green tones"]
+        },   {
+        "image":"images/boho_green_living_room_2.jpg",
+        "tags": ["boho", "living room","green tones"]
+        },   {
+        "image":"images/boho_green_living_room_3.jpg",
+        "tags": ["boho", "living room","green tones"]
+        },   {
+        "image":"images/boho_green_living_room_4.jpg",
+        "tags": ["boho", "living room","green tones"]
+        },  
+         {
+        "image":"images/boho_home_office_1.jpg",
+        "tags": ["boho", "home office","earthy tones"]
+        },  
+         {
+        "image":"images/boho_home_office_2.jpg",
+        "tags": ["boho", "home office","earthy tones"]
+        },  
+         {
+        "image":"images/boho_home_office_3.jpg",
+        "tags": ["boho", "home office","earthy tones"]
+        }, 
+         {
+        "image":"images/boho_kids_room_1.jpg",
+        "tags": ["boho", "kids room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kids_room_2.jpg",
+        "tags": ["boho", "kids room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kids_room_3.jpg",
+        "tags": ["boho", "kids room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kitchen_1.jpg",
+        "tags": ["boho", "kitchen","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kitchen_2.jpg",
+        "tags": ["boho", "kitchen","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kitchen_3.jpg",
+        "tags": ["boho", "kitchen","earthy tones"]
+        },  
+         {
+        "image":"images/boho_kitchen_4.jpg",
+        "tags": ["boho", "kitchen","earthy tones"]
+        }, 
+         {
+        "image":"images/boho_living_room_1.jpg",
+        "tags": ["boho", "living room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_living_room_2.jpg",
+        "tags": ["boho", "living room","earthy tones"]
+        },  
+         {
+        "image":"images/boho_living_room_3.jpg",
+        "tags": ["boho", "living room","earthy tones"]
+        }, 
+         {
+        "image":"images/colourful_kids_bedroom_1.jpg",
+        "tags": ["colourful", "bedroom","kids room"]
+        },  
+         {
+        "image":"images/colourful_kids_bedroom_2.jpg",
+        "tags": ["colourful", "bedroom","kids room"]
+        },  
+         {
+        "image":"images/colourful_kids_bedroom_3.jpg",
+        "tags": ["colourful", "bedroom","kids room"]
+        },  
+         {
+        "image":"images/dining_room_black_1.jpg",
+        "tags": ["modern", "dining room","black"]
+        },  
+         {
+        "image":"images/dining_room_black_2.jpg",
+        "tags": ["modern", "dining room","black"]
+        },  
+         {
+        "image":"images/dining_room_black_3.jpg",
+        "tags": ["modern", "dining room","black"]
+        }, 
+         {
+        "image":"images/dining_room_luxury_1.jpg",
+        "tags": ["modern", "dining room","luxury"]
+        }, 
+         {
+        "image":"images/dining_room_luxury_2.jpg",
+        "tags": ["modern", "dining room","luxury"]
+        }, 
+         {
+        "image":"images/dining_room_luxury_3.jpg",
+        "tags": ["modern", "dining room","luxury"]
+        },    
+         {
+        "image":"images/dining_room_white_1.jpg",
+        "tags": ["modern", "dining room","white"]
+        }, 
+         {
+        "image":"images/dining_room_white_2.jpg",
+        "tags": ["modern", "dining room","white"]
+        }, 
+         {
+        "image":"images/dining_room_white_3.jpg",
+        "tags": ["modern", "dining room","white"]
+        }, 
+         {
+        "image":"images/green_dining_room_1.jpg",
+        "tags": ["modern", "dining room","green tones"]
+        }, 
+         {
+        "image":"images/green_dining_room_2.jpg",
+        "tags": ["modern", "dining room","green tones"]
+        }, 
+         {
+        "image":"images/green_dining_room_3.jpg",
+        "tags": ["modern", "dining room","green tones"]
+        },  
+        {
+        "image":"images/green_home_office_1.jpg",
+        "tags": ["modern", "home office","green tones"]
+        },  
+       
+         {
+        "image":"images/green_home_office_2.jpg",
+        "tags": ["modern", "home office","green tones"]
+        },  
+       
+         {
+        "image":"images/green_home_office_3.jpg",
+        "tags": ["modern", "home office","green tones"]
+        },  
+         {
+        "image":"images/green_kitchen_1.jpg",
+        "tags": ["modern", "kitchen","green tones"]
+        },  
+       
+         {
+        "image":"images/green_kitchen_2.jpg",
+        "tags": ["modern", "kitchen","green tones"]
+        },  
+       
+         {
+        "image":"images/green_kitchen_3.jpg",
+        "tags": ["modern", "kitchen","green tones"]
+        }, 
+         {
+        "image":"images/green_kitchen_4.jpg",
+        "tags": ["modern", "kitchen","green tones"]
+        }, 
+         {
+        "image":"images/green_kitchen_5.jpg",
+        "tags": ["modern", "kitchen","green tones"]
+        },  
+         {
+        "image":"images/kids_room_white_1.jpg",
+        "tags": ["white", "bedroom","kids room"]
+        }, 
+         {
+        "image":"images/luxury_living_room_neutral_1.jpg",
+        "tags": ["luxury", "living room","neutral tones"]
+        }, 
+         {
+        "image":"images/luxury_living_room_neutral_2.jpg",
+        "tags": ["luxury", "living room","neutral tones"]
+        }, 
+         {
+        "image":"images/luxury_living_room_neutral_3.jpg",
+        "tags": ["luxury", "living room","neutral tones"]
+        }, 
+         {
+        "image":"images/luxury_living_room_neutral_4.jpg",
+        "tags": ["luxury", "living room","neutral tones"]
+        }, 
+         {
+        "image":"images/marble_bathroom_1.jpg",
+        "tags": ["luxury", "bathroom","marble"]
+        }, 
+         {
+        "image":"images/marble_bathroom_2.jpg",
+        "tags": ["luxury", "bathroom","marble"]
+        }, 
+         {
+        "image":"images/marble_bathroom_3.jpg",
+        "tags": ["luxury", "bathroom","marble"]
+        }, 
+         {
+        "image":"images/marble_bathroom_4.jpg",
+        "tags": ["luxury", "bathroom","marble"]
+        }, 
+         {
+        "image":"images/minimal_kitchen_1.jpg",
+        "tags": ["minimal", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/minimal_kitchen_2.jpg",
+        "tags": ["minimal", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/minimal_kitchen_3.jpg",
+        "tags": ["minimal", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/minimal_white_bedroom_1.jpg",
+        "tags": ["minimal", "bedroom","white"]
+        }, 
+         {
+        "image":"images/minimal_white_bedroom_2.jpg",
+        "tags": ["minimal", "bedroom","white"]
+        }, 
+         {
+        "image":"images/minimal_white_bedroom_3.jpg",
+        "tags": ["minimal", "bedroom","white"]
+        }, 
+         {
+        "image":"images/minimal_white_living_room_1.jpg",
+        "tags": ["minimal", "living room","white"]
+        }, 
+         {
+        "image":"images/minimal_white_living_room_2.jpg",
+        "tags": ["minimal", "living room","white"]
+        }, 
+         {
+        "image":"images/minimal_white_living_room_3.jpg",
+        "tags": ["minimal", "living room","white"]
+        }, 
+         {
+        "image":"images/minimal_white_living_room_4.jpg",
+        "tags": ["minimal", "living room","white"]
+        }, 
+        {
+        "image":"images/modern_bathroom_1.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+         {
+        "image":"images/modern_bathroom_2.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+         {
+        "image":"images/modern_bathroom_3.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+         {
+        "image":"images/modern_bathroom_4.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+         {
+        "image":"images/modern_bathroom_5.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+         {
+        "image":"images/modern_bathroom_6.jpg",
+        "tags": ["modern", "bathroom","beige"]
+        }, 
+        {
+        "image":"images/modern_bedroom_interior_1.jpg",
+        "tags": ["modern", "bedroom","beige"]
+        }, 
+       
+         {
+        "image":"images/modern_bedroom_interior_2.jpg",
+        "tags": ["modern", "bedroom","beige"]
+        }, 
+       
+         {
+        "image":"images/modern_bedroom_interior_3.jpg",
+        "tags": ["modern", "bedroom","beige"]
+        }, 
+       
+         {
+        "image":"images/modern_bedroom_interior_4.jpg",
+        "tags": ["modern", "bedroom","beige"]
+        }, 
+         {
+        "image":"images/modern_blue_bedroom_1.jpg",
+        "tags": ["modern", "bedroom","blue"]
+        }, 
+         {
+        "image":"images/modern_blue_bedroom_2.jpg",
+        "tags": ["modern", "bedroom","blue"]
+        }, 
+         {
+        "image":"images/modern_blue_bedroom_3.jpg",
+        "tags": ["modern", "bedroom","blue"]
+        }, 
+         {
+        "image":"images/modern_blue_bedroom_4.jpg",
+        "tags": ["modern", "bedroom","blue"]
+        }, 
+         {
+        "image":"images/modern_blue__living_room_1.jpg",
+        "tags": ["modern", "living room","blue"]
+        },
+         {
+        "image":"images/modern_blue_living_room_2.jpg",
+        "tags": ["modern", "living room","blue"]
+        },
+         {
+        "image":"images/modern_blue_living_room_3.jpg",
+        "tags": ["modern", "living room","blue"]
+        },
+       {
+        "image":"images/modern_dining_room_1.jpg",
+        "tags": ["modern", "dining room","beige"]
+        }, 
+         {
+        "image":"images/modern_dining_room_2.jpg",
+        "tags": ["modern", "dining room","beige"]
+        }, 
+         {
+        "image":"images/modern_dining_room_3.jpg",
+        "tags": ["modern", "dining room","beige"]
+        },   
+         {
+        "image":"images/modern_home_office_1.jpg",
+        "tags": ["modern", "home office","beige"]
+        },
+         {
+        "image":"images/modern_home_office_2.jpg",
+        "tags": ["modern", "home office","beige"]
+        },
+         {
+        "image":"images/modern_home_office_3.jpg",
+        "tags": ["modern", "home office","beige"]
+        }, 
+         {
+        "image":"images/modern_kids_bedroom_1.jpg",
+        "tags": ["modern", "bedroom","kids room"]
+        },
+         {
+        "image":"images/modern_kids_bedroom_2.jpg",
+        "tags": ["modern", "bedroom","kids room"]
+        },
+         {
+        "image":"images/modern_kids_bedroom_3.jpg",
+        "tags": ["modern", "bedroom","kids room"]
+        },
+         {
+        "image":"images/modern_kitchen_1.jpg",
+        "tags": ["modern", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/modern_kitchen_2.jpg",
+        "tags": ["modern", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/modern_kitchen_3.jpg",
+        "tags": ["modern", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/modern_kitchen_4.jpg",
+        "tags": ["modern", "kitchen","beige"]
+        }, 
+         {
+        "image":"images/modern_living_room_1.jpg",
+        "tags": ["modern", "living room","beige"]
+        },
+         {
+        "image":"images/modern_living_room_2.jpg",
+        "tags": ["modern", "living room","beige"]
+        },
+         {
+        "image":"images/modern_blue_living_room_3.jpg",
+        "tags": ["modern", "living room","beige"]
+        },
+         {
+        "image":"images/pastel_bedroom_1.jpg",
+        "tags": ["modern", "bedroom","pastel"]
+        }, 
+         {
+        "image":"images/pastel_bedroom_2.jpg",
+        "tags": ["modern", "bedroom","pastel"]
+        }, 
+         {
+        "image":"images/pastel_bedroom_3.jpg",
+        "tags": ["modern", "bedroom","pastel"]
+        }, 
+         {
+        "image":"images/pastel_bedroom_4.jpg",
+        "tags": ["modern", "bedroom","pastel"]
+        }, 
+         {
+        "image":"images/pastel_bedroom_5.jpg",
+        "tags": ["modern", "bedroom","pastel"]
+        }, 
+         {
+        "image":"images/pastel_kids_room_1.jpg",
+        "tags": ["modern", "kids room","pastel"]
+        }, 
+         {
+        "image":"images/pastel_kids_room_2.jpg",
+        "tags": ["modern", "kids room","pastel"]
+        }, 
+         {
+        "image":"images/pastel_kids_room_3.jpg",
+        "tags": ["modern", "kids room","pastel"]
+        },
+         {
+        "image":"images/scandinavian_bathroom_1.jpg",
+        "tags": ["scandinavian", "bathroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_bathroom_2.jpg",
+        "tags": ["scandinavian", "bathroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_bathroom_3.jpg",
+        "tags": ["scandinavian", "bathroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_bathroom_4.jpg",
+        "tags": ["scandinavian", "bathroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_1.jpg",
+        "tags": ["scandinavian", "bedroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_2.jpg",
+        "tags": ["scandinavian", "bedroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_3.jpg",
+        "tags": ["scandinavian", "bedroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_4.jpg",
+        "tags": ["scandinavian", "bedroom","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_living_room_1.jpg",
+        "tags": ["scandinavian", "living room","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_living_room_2.jpg",
+        "tags": ["scandinavian", "living room","beige"]
+        },
+         {
+        "image":"images/scandinavian_beige_living_room_3.jpg",
+        "tags": ["scandinavian", "living room","beige"]
+        },
+         {
+        "image":"images/scandinavian_dining_room_1.jpg",
+        "tags": ["scandinavian", "dining room","beige"]
+        },
+         {
+        "image":"images/scandinavian_dining_room_2.jpg",
+        "tags": ["scandinavian", "dining room","beige"]
+        },
+         {
+        "image":"images/scandinavian_dining_room_3.jpg",
+        "tags": ["scandinavian", "dining room","beige"]
+        },
+         {
+        "image":"images/scandinavian_home_office_1.jpg",
+        "tags": ["scandinavian", "home office","beige"]
+        },
+         {
+        "image":"images/scandinavian_home_office_2.jpg",
+        "tags": ["scandinavian", "home office","beige"]
+        },
+         {
+        "image":"images/scandinavian_home_office_3.jpg",
+        "tags": ["scandinavian", "home office","beige"]
+        },
+         {
+        "image":"images/scandinavian_kids_room_1.jpg",
+        "tags": ["scandinavian", "kids room","beige"]
+        },
+         {
+        "image":"images/scandinavian_kids_room_2.jpg",
+        "tags": ["scandinavian", "kids room","beige"]
+        },
+         {
+        "image":"images/scandinavian_kids_room_3.jpg",
+        "tags": ["scandinavian", "kids room","beige"]
+        },
+         {
+        "image":"images/scandinavian_kitchen_1.jpg",
+        "tags": ["scandinavian", "kitchen","beige"]
+        },
+         {
+        "image":"images/scandinavian_kitchen_2.jpg",
+        "tags": ["scandinavian", "kitchen","beige"]
+        },
+         {
+        "image":"images/scandinavian_kitchen_3.jpg",
+        "tags": ["scandinavian", "kitchen","beige"]
+        },
+         {
+        "image":"images/scandinavian_kitchen_4.jpg",
+        "tags": ["scandinavian", "kitchen","beige"]
+        },
+         {
+        "image":"images/white_kitchen_4.jpg",
+        "tags": ["minimal", "bathroom","white"]
+        },
+         {
+        "image":"images/white_kitchen_4.jpg",
+        "tags": ["minimal", "bathroom","white"]
+        },
+         {
+        "image":"images/white_kitchen_4.jpg",
+        "tags": ["minimal", "bathroom","white"]
+        },
+         {
+        "image":"images/white_kitchen_4.jpg",
+        "tags": ["minimal", "bathroom","white"]
+        },
+         {
+        "image":"images/white_home_office_1.jpg",
+        "tags": ["minimal", "home office","white"]
+        },
+         {
+        "image":"images/white_home_office_2.jpg",
+        "tags": ["minimal", "home office","white"]
+        },
+         {
+        "image":"images/white_home_office_3.jpg",
+        "tags": ["minimal", "home office","white"]
+        },
+         {
+        "image":"images/white_kitchen_1.jpg",
+        "tags": ["minimal", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_2.jpg",
+        "tags": ["minimal", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_3.jpg",
+        "tags": ["minimal", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_luxury_1.jpg",
+        "tags": ["luxury", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_luxury_2.jpg",
+        "tags": ["luxury", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_luxury_3.jpg",
+        "tags": ["luxury", "kitchen","white"]
+        },
+         {
+        "image":"images/white_kitchen_luxury_4.jpg",
+        "tags": ["luxury", "kitchen","white"]
+        }
+]
