@@ -87,6 +87,19 @@ Responsive web interface with landing page, analyze page, styles page, and dashb
 Backend API for auth, room catalog, inspiration generation, and history storage
 
 
+Local setup
+
+1. Create `backend/.env` from [`backend/.env.example`](/c:/Users/abina/OneDrive/Desktop/AbinavVSCode/Easy-Design/backend/.env.example).
+
+2. In MongoDB Atlas, create a database user and add your current IP address under Network Access.
+
+3. Paste your Atlas connection string into `backend/.env` as `MONGO_URI`.
+
+4. Start the backend with `cd backend` and `npm run dev`.
+
+5. Open `http://localhost:5000/api/health` and confirm you see `"status":"ok"` with `"persistence":"mongodb"`.
+
+
 System Workflow
 
 User opens the web app and explores the landing page or design flow
