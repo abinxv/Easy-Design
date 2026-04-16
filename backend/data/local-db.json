@@ -1,0 +1,706 @@
+{
+  "users": [
+    {
+      "id": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "name": "abi2",
+      "email": "abi2@gmail.com",
+      "passwordHash": "$2a$12$SBaGd9wkH2rxNR6zsoBRAOr3uD30K4GaE6VAdY1i.ZsBHhg2PvXki",
+      "createdAt": "2026-03-26T04:31:43.644Z",
+      "updatedAt": "2026-03-26T04:31:43.644Z"
+    },
+    {
+      "id": "c5dd6bc1-99dd-4a0b-8f0a-e780c169fc04",
+      "name": "Test User",
+      "email": "testuser@example.com",
+      "passwordHash": "$2a$12$7qx5IJOPfl36b0FVEQrX1elRCnZl.YWHyuY3.PmXKrcYdeM3rewZ2",
+      "createdAt": "2026-04-15T12:40:51.648Z",
+      "updatedAt": "2026-04-15T12:40:51.648Z"
+    },
+    {
+      "id": "7a9791f1-3cfd-4a07-b82d-5b4586529288",
+      "name": "Second Test",
+      "email": "secondtest@example.com",
+      "passwordHash": "$2a$12$TBx/S3gqNy0oErFMKIRJr.VhOFvQXwrDr6PO8cdWLZl/gg9V9.Wte",
+      "createdAt": "2026-04-15T12:46:01.125Z",
+      "updatedAt": "2026-04-15T12:46:01.125Z"
+    },
+    {
+      "id": "ee73257b-35c0-4fe5-b8e9-c7ea28583c1a",
+      "name": "Port 5055 Test",
+      "email": "port5055b@example.com",
+      "passwordHash": "$2a$12$ZQXen.odnXpx3X9Gg4SjJOUwHqVLKpV916b5OkQY/3GuqeV0kd9Iq",
+      "createdAt": "2026-04-15T12:50:54.334Z",
+      "updatedAt": "2026-04-15T12:50:54.334Z"
+    },
+    {
+      "id": "d56c6fcb-dcf5-4e70-8755-a586f6ada522",
+      "name": "Flow Test",
+      "email": "flowtest@example.com",
+      "passwordHash": "$2a$12$saMYY9YsfxZEKgEco9VCAeaUXKfKspRXYqDl3FD6kSc5/gpI63WZ.",
+      "createdAt": "2026-04-15T12:51:35.852Z",
+      "updatedAt": "2026-04-15T12:51:35.852Z"
+    },
+    {
+      "id": "01a62ab3-16d8-4757-9fab-60c591e7fdf6",
+      "name": "test1",
+      "email": "test1@gmail.com",
+      "passwordHash": "$2a$12$WaZbv7OqyOnkeu4zSm5MRO0Lmgh3xSEY6NUQpOCfkTZvRewuJzyze",
+      "createdAt": "2026-04-15T12:52:40.403Z",
+      "updatedAt": "2026-04-15T12:52:40.403Z"
+    },
+    {
+      "id": "8495b028-83fa-4aa0-9971-9ec9234c648e",
+      "name": "Final Live Check",
+      "email": "finallivecheck@example.com",
+      "passwordHash": "$2a$12$XWv2VSSDNm9jDzn6D7tTNuBcSW1yUMQ70BZvzN143uakagb7bZl3C",
+      "createdAt": "2026-04-15T12:56:11.283Z",
+      "updatedAt": "2026-04-15T12:56:11.283Z"
+    },
+    {
+      "id": "af3e2ff5-1591-42eb-96c1-8cf656e59bdc",
+      "name": "Codex Check",
+      "email": "codex-check-1776311767@example.com",
+      "passwordHash": "$2a$12$bKPUJUMrMVe0PHwrgXqMJu3eQpi.RSANNOdVBdHa89Lekf8tZN5u.",
+      "createdAt": "2026-04-16T03:56:07.167Z",
+      "updatedAt": "2026-04-16T03:56:07.167Z"
+    }
+  ],
+  "designs": [
+    {
+      "id": "9963185a-4829-4083-b549-a4fd8e822b10",
+      "userId": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "room": "living-room",
+      "roomLabel": "Living Room",
+      "selectedItems": [
+        "Coffee Table",
+        "Bookshelf",
+        "Indoor Plants"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Living Room Design Ideas",
+          "description": "Explore Pinterest searches for living room layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Living Room interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20interior%20design%20ideas",
+          "previewKey": "living-room",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Coffee Table Ideas",
+          "description": "Pinterest results focused on coffee table inspiration for a living room.",
+          "searchQuery": "Coffee Table Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Coffee%20Table%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Coffee Table",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Bookshelf Ideas",
+          "description": "Pinterest results focused on bookshelf inspiration for a living room.",
+          "searchQuery": "Bookshelf Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bookshelf%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Bookshelf",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Indoor Plants Ideas",
+          "description": "Pinterest results focused on indoor plants inspiration for a living room.",
+          "searchQuery": "Indoor Plants Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Indoor%20Plants%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Indoor Plants",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Living Room Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a living room.",
+          "searchQuery": "Living Room color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20color%20palette%20interior",
+          "previewKey": "living-room",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "Coffee Table + Bookshelf + Indoor Plants Combo",
+          "description": "See how people combine coffee table, bookshelf, indoor plants in one living room.",
+          "searchQuery": "Coffee Table + Bookshelf + Indoor Plants Living Room design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Coffee%20Table%20%2B%20Bookshelf%20%2B%20Indoor%20Plants%20Living%20Room%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Combo",
+            "Living Room"
+          ]
+        }
+      ],
+      "createdAt": "2026-03-26T04:31:59.791Z",
+      "updatedAt": "2026-03-26T04:31:59.791Z"
+    },
+    {
+      "id": "334481bc-829f-4af8-8006-195519b28fbf",
+      "userId": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "room": "bedroom",
+      "roomLabel": "Bedroom",
+      "selectedItems": [
+        "Nightstand",
+        "Reading Lamp",
+        "King-size Bed",
+        "Study Table"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Bedroom Design Ideas",
+          "description": "Explore Pinterest searches for bedroom layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Bedroom interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20interior%20design%20ideas",
+          "previewKey": "bedroom",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Nightstand Ideas",
+          "description": "Pinterest results focused on nightstand inspiration for a bedroom.",
+          "searchQuery": "Nightstand Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Nightstand%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Nightstand",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Reading Lamp Ideas",
+          "description": "Pinterest results focused on reading lamp inspiration for a bedroom.",
+          "searchQuery": "Reading Lamp Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Reading%20Lamp%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Reading Lamp",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "King-size Bed Ideas",
+          "description": "Pinterest results focused on king-size bed inspiration for a bedroom.",
+          "searchQuery": "King-size Bed Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=King-size%20Bed%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "King-size Bed",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Study Table Ideas",
+          "description": "Pinterest results focused on study table inspiration for a bedroom.",
+          "searchQuery": "Study Table Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Study%20Table%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Study Table",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Bedroom Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a bedroom.",
+          "searchQuery": "Bedroom color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20color%20palette%20interior",
+          "previewKey": "bedroom",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "Nightstand + Reading Lamp + King-size Bed Combo",
+          "description": "See how people combine nightstand, reading lamp, king-size bed in one bedroom.",
+          "searchQuery": "Nightstand + Reading Lamp + King-size Bed Bedroom design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Nightstand%20%2B%20Reading%20Lamp%20%2B%20King-size%20Bed%20Bedroom%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Combo",
+            "Bedroom"
+          ]
+        }
+      ],
+      "createdAt": "2026-03-26T04:54:24.005Z",
+      "updatedAt": "2026-03-26T04:54:24.005Z"
+    },
+    {
+      "id": "b198214d-6796-4348-a5f1-6de567054b4e",
+      "userId": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "room": "living-room",
+      "roomLabel": "Living Room",
+      "selectedItems": [
+        "TV Console",
+        "Coffee Table",
+        "Bookshelf"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Living Room Design Ideas",
+          "description": "Explore Pinterest searches for living room layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Living Room interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20interior%20design%20ideas",
+          "previewKey": "living-room",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "TV Console Ideas",
+          "description": "Pinterest results focused on tv console inspiration for a living room.",
+          "searchQuery": "TV Console Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=TV%20Console%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "TV Console",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Coffee Table Ideas",
+          "description": "Pinterest results focused on coffee table inspiration for a living room.",
+          "searchQuery": "Coffee Table Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Coffee%20Table%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Coffee Table",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Bookshelf Ideas",
+          "description": "Pinterest results focused on bookshelf inspiration for a living room.",
+          "searchQuery": "Bookshelf Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bookshelf%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Bookshelf",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Living Room Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a living room.",
+          "searchQuery": "Living Room color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20color%20palette%20interior",
+          "previewKey": "living-room",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "TV Console + Coffee Table + Bookshelf Combo",
+          "description": "See how people combine tv console, coffee table, bookshelf in one living room.",
+          "searchQuery": "TV Console + Coffee Table + Bookshelf Living Room design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=TV%20Console%20%2B%20Coffee%20Table%20%2B%20Bookshelf%20Living%20Room%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Combo",
+            "Living Room"
+          ]
+        }
+      ],
+      "createdAt": "2026-03-26T04:57:17.128Z",
+      "updatedAt": "2026-03-26T04:57:17.128Z"
+    },
+    {
+      "id": "253d01cc-dee8-46c2-b5c0-9b0df921634f",
+      "userId": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "room": "bedroom",
+      "roomLabel": "Bedroom",
+      "selectedItems": [
+        "King-size Bed",
+        "Dresser",
+        "Reading Lamp",
+        "Indoor Plants"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Bedroom Design Ideas",
+          "description": "Explore Pinterest searches for bedroom layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Bedroom interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20interior%20design%20ideas",
+          "previewKey": "bedroom",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "King-size Bed Ideas",
+          "description": "Pinterest results focused on king-size bed inspiration for a bedroom.",
+          "searchQuery": "King-size Bed Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=King-size%20Bed%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "King-size Bed",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Dresser Ideas",
+          "description": "Pinterest results focused on dresser inspiration for a bedroom.",
+          "searchQuery": "Dresser Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Dresser%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Dresser",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Reading Lamp Ideas",
+          "description": "Pinterest results focused on reading lamp inspiration for a bedroom.",
+          "searchQuery": "Reading Lamp Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Reading%20Lamp%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Reading Lamp",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Indoor Plants Ideas",
+          "description": "Pinterest results focused on indoor plants inspiration for a bedroom.",
+          "searchQuery": "Indoor Plants Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Indoor%20Plants%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Indoor Plants",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Bedroom Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a bedroom.",
+          "searchQuery": "Bedroom color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20color%20palette%20interior",
+          "previewKey": "bedroom",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "King-size Bed + Dresser + Reading Lamp Combo",
+          "description": "See how people combine king-size bed, dresser, reading lamp in one bedroom.",
+          "searchQuery": "King-size Bed + Dresser + Reading Lamp Bedroom design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=King-size%20Bed%20%2B%20Dresser%20%2B%20Reading%20Lamp%20Bedroom%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Combo",
+            "Bedroom"
+          ]
+        }
+      ],
+      "createdAt": "2026-03-26T05:20:42.733Z",
+      "updatedAt": "2026-03-26T05:20:42.733Z"
+    },
+    {
+      "id": "8b08f9d0-306f-4ed2-966e-b9770ac8cfc8",
+      "userId": "42e5d8a3-6059-401f-b73d-eef063bd1d6a",
+      "room": "bedroom",
+      "roomLabel": "Bedroom",
+      "selectedItems": [
+        "King-size Bed",
+        "Dresser",
+        "Reading Lamp",
+        "Study Table"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Bedroom Design Ideas",
+          "description": "Explore Pinterest searches for bedroom layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Bedroom interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20interior%20design%20ideas",
+          "previewKey": "bedroom",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "King-size Bed Ideas",
+          "description": "Pinterest results focused on king-size bed inspiration for a bedroom.",
+          "searchQuery": "King-size Bed Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=King-size%20Bed%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "King-size Bed",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Dresser Ideas",
+          "description": "Pinterest results focused on dresser inspiration for a bedroom.",
+          "searchQuery": "Dresser Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Dresser%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Dresser",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Reading Lamp Ideas",
+          "description": "Pinterest results focused on reading lamp inspiration for a bedroom.",
+          "searchQuery": "Reading Lamp Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Reading%20Lamp%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Reading Lamp",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Study Table Ideas",
+          "description": "Pinterest results focused on study table inspiration for a bedroom.",
+          "searchQuery": "Study Table Bedroom interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Study%20Table%20Bedroom%20interior%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Study Table",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Bedroom Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a bedroom.",
+          "searchQuery": "Bedroom color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Bedroom%20color%20palette%20interior",
+          "previewKey": "bedroom",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Bedroom"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "King-size Bed + Dresser + Reading Lamp Combo",
+          "description": "See how people combine king-size bed, dresser, reading lamp in one bedroom.",
+          "searchQuery": "King-size Bed + Dresser + Reading Lamp Bedroom design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=King-size%20Bed%20%2B%20Dresser%20%2B%20Reading%20Lamp%20Bedroom%20design",
+          "previewKey": "bedroom",
+          "tags": [
+            "Combo",
+            "Bedroom"
+          ]
+        }
+      ],
+      "createdAt": "2026-03-26T05:37:22.239Z",
+      "updatedAt": "2026-03-26T05:37:22.239Z"
+    },
+    {
+      "id": "3b2e376f-5170-4d36-8a89-6d1d7cbc4ae8",
+      "userId": "d56c6fcb-dcf5-4e70-8755-a586f6ada522",
+      "room": "living-room",
+      "roomLabel": "Living Room",
+      "selectedItems": [
+        "sofa",
+        "coffee table"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Living Room Design Ideas",
+          "description": "Explore Pinterest searches for living room layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Living Room interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20interior%20design%20ideas",
+          "previewKey": "living-room",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "sofa Ideas",
+          "description": "Pinterest results focused on sofa inspiration for a living room.",
+          "searchQuery": "sofa Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=sofa%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "sofa",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "coffee table Ideas",
+          "description": "Pinterest results focused on coffee table inspiration for a living room.",
+          "searchQuery": "coffee table Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=coffee%20table%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "coffee table",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Living Room Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a living room.",
+          "searchQuery": "Living Room color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20color%20palette%20interior",
+          "previewKey": "living-room",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "sofa + coffee table Combo",
+          "description": "See how people combine sofa, coffee table in one living room.",
+          "searchQuery": "sofa + coffee table Living Room design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=sofa%20%2B%20coffee%20table%20Living%20Room%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Combo",
+            "Living Room"
+          ]
+        }
+      ],
+      "createdAt": "2026-04-15T12:51:36.178Z",
+      "updatedAt": "2026-04-15T12:51:36.178Z"
+    },
+    {
+      "id": "c76eae7b-a603-424d-bee0-e132c511180e",
+      "userId": "af3e2ff5-1591-42eb-96c1-8cf656e59bdc",
+      "room": "living-room",
+      "roomLabel": "Living Room",
+      "selectedItems": [
+        "Sofa",
+        "Coffee Table"
+      ],
+      "inspirations": [
+        {
+          "kind": "overview",
+          "title": "Living Room Design Ideas",
+          "description": "Explore Pinterest searches for living room layouts, furniture placement, and styling ideas.",
+          "searchQuery": "Living Room interior design ideas",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20interior%20design%20ideas",
+          "previewKey": "living-room",
+          "tags": [
+            "Layout",
+            "Styling",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Sofa Ideas",
+          "description": "Pinterest results focused on sofa inspiration for a living room.",
+          "searchQuery": "Sofa Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Sofa%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Sofa",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "item",
+          "title": "Coffee Table Ideas",
+          "description": "Pinterest results focused on coffee table inspiration for a living room.",
+          "searchQuery": "Coffee Table Living Room interior design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Coffee%20Table%20Living%20Room%20interior%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Coffee Table",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "palette",
+          "title": "Living Room Color Palettes",
+          "description": "Browse mood boards and color combinations that suit a living room.",
+          "searchQuery": "Living Room color palette interior",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Living%20Room%20color%20palette%20interior",
+          "previewKey": "living-room",
+          "tags": [
+            "Colors",
+            "Palette",
+            "Living Room"
+          ]
+        },
+        {
+          "kind": "combo",
+          "title": "Sofa + Coffee Table Combo",
+          "description": "See how people combine sofa, coffee table in one living room.",
+          "searchQuery": "Sofa + Coffee Table Living Room design",
+          "pinterestUrl": "https://www.pinterest.com/search/pins/?q=Sofa%20%2B%20Coffee%20Table%20Living%20Room%20design",
+          "previewKey": "living-room",
+          "tags": [
+            "Combo",
+            "Living Room"
+          ]
+        }
+      ],
+      "createdAt": "2026-04-16T03:56:07.619Z",
+      "updatedAt": "2026-04-16T03:56:07.619Z"
+    }
+  ]
+}
