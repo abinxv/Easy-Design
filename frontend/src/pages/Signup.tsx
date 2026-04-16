@@ -24,6 +24,18 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+
+    if (trimmedName.length < 2) {
+      toast({
+        title: "Invalid name",
+        description: "Name must be at least 2 characters.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (password.length < 6) {
       toast({
         title: "Weak password",
@@ -35,7 +47,7 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      await signup(name, email, password);
+      await signup(trimmedName, trimmedEmail, password);
       toast({ title: "Account created!", description: "Welcome to EasyDesign." });
       navigate("/dashboard");
     } catch (error) {

@@ -17,6 +17,7 @@ backend/dist/
 !frontend/.env.example
 backend/.env
 frontend/.env
+backend/data/local-db.json
 
 # Logs
 *.log

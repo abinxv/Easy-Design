@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
-const connectDB = require("./config/db");
+const { connectDB, getDatabaseStatus } = require("./config/db");
 const authRoutes = require("./routes/auth");
 const designRoutes = require("./routes/designs");
 
@@ -30,7 +31,13 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", service: "easy-design-backend" });
+  const database = getDatabaseStatus();
+  res.json({
+    status: database.persistenceMode === "mongodb" && !database.ready ? "degraded" : "ok",
+    service: "easy-design-backend",
+    persistence: database.persistenceMode,
+    database,
+  });
 });
 
 app.use("/api/auth", authRoutes);
@@ -41,10 +48,11 @@ app.get("/", (_req, res) => {
 });
 
 async function startServer() {
-  await connectDB();
   app.listen(PORT, () => {
     console.log(`EasyDesign backend listening on port ${PORT}`);
   });
+
+  await connectDB();
 }
 
 startServer().catch((error) => {

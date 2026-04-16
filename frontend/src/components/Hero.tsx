@@ -48,7 +48,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-lg font-body leading-relaxed"
           >
-            Upload a photo of your room and let AI suggest personalized design ideas — 
+            Let AI suggest personalized design ideas:
             furniture, colors, and styles tailored to your space.
           </motion.p>
 

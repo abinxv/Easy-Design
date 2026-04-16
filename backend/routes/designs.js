@@ -1,9 +1,12 @@
 const express = require("express");
 const auth = require("../middleware/auth");
 const optionalAuth = require("../middleware/optionalAuth");
+const { isDatabaseReady, shouldUseLocalStore } = require("../config/db");
+const { createLocalDesign, listLocalDesignsByUserId } = require("../data/localStore");
 const Design = require("../models/Design");
 const { getRoomConfig, listRoomCatalog } = require("../data/roomCatalog");
 const { buildInspirations } = require("../utils/inspirationBuilder");
+const { handleDesignAssistantTurn, CHAT_STAGES } = require("../utils/designAssistant");
 
 const router = express.Router();
 
@@ -13,6 +16,52 @@ function normalizeSelectedItems(items) {
   }
 
   return [...new Set(items.map((item) => String(item || "").trim()).filter(Boolean))];
+}
+
+function isMongoUnavailable() {
+  return !shouldUseLocalStore() && !isDatabaseReady();
+}
+
+function serializeDesign(design) {
+  return {
+    id: design._id?.toString?.() || design.id,
+    room: design.room,
+    roomLabel: design.roomLabel,
+    selectedItems: design.selectedItems,
+    inspirations: design.inspirations,
+    createdAt: design.createdAt,
+    updatedAt: design.updatedAt,
+  };
+}
+
+async function persistDesignForUser({ userId, room, roomLabel, selectedItems, inspirations }) {
+  if (!userId) {
+    return null;
+  }
+
+  if (isMongoUnavailable()) {
+    throw Object.assign(new Error("Database is reconnecting. Please try saving again in a moment."), {
+      statusCode: 503,
+    });
+  }
+
+  const design = shouldUseLocalStore()
+    ? await createLocalDesign({
+        userId,
+        room,
+        roomLabel,
+        selectedItems,
+        inspirations,
+      })
+    : await Design.create({
+        userId,
+        room,
+        roomLabel,
+        selectedItems,
+        inspirations,
+      });
+
+  return serializeDesign(design);
 }
 
 async function searchInspirations(req, res) {
@@ -27,26 +76,15 @@ async function searchInspirations(req, res) {
     }
 
     const inspirations = buildInspirations(room, selectedItems);
-    let savedDesign = null;
-
-    if (req.user?.id) {
-      const design = await Design.create({
-        userId: req.user.id,
-        room,
-        roomLabel: roomConfig.label,
-        selectedItems,
-        inspirations,
-      });
-
-      savedDesign = {
-        id: design._id.toString(),
-        room: design.room,
-        roomLabel: design.roomLabel,
-        selectedItems: design.selectedItems,
-        inspirations: design.inspirations,
-        createdAt: design.createdAt,
-      };
-    }
+    const savedDesign = req.user?.id
+      ? await persistDesignForUser({
+          userId: req.user.id,
+          room,
+          roomLabel: roomConfig.label,
+          selectedItems,
+          inspirations,
+        })
+      : null;
 
     res.json({
       room: {
@@ -58,10 +96,56 @@ async function searchInspirations(req, res) {
       savedDesign,
     });
   } catch (error) {
+    if (error?.statusCode === 503) {
+      res.status(503).json({ message: error.message });
+      return;
+    }
+
     console.error("Inspiration search error:", error);
     res.status(500).json({ message: "Unable to build inspiration links right now." });
   }
 }
+
+router.post("/assistant", optionalAuth, async (req, res) => {
+  try {
+    const assistantResponse = await handleDesignAssistantTurn({
+      message: req.body.message,
+      action: req.body.action,
+      state: req.body.state,
+    });
+
+    let savedDesign = null;
+
+    if (
+      req.user?.id &&
+      assistantResponse.didGenerateResults &&
+      assistantResponse.room &&
+      Array.isArray(assistantResponse.inspirations) &&
+      assistantResponse.inspirations.length > 0
+    ) {
+      savedDesign = await persistDesignForUser({
+        userId: req.user.id,
+        room: assistantResponse.room.slug,
+        roomLabel: assistantResponse.room.label,
+        selectedItems: assistantResponse.selectedItems,
+        inspirations: assistantResponse.inspirations,
+      });
+    }
+
+    res.json({
+      ...assistantResponse,
+      savedDesign,
+    });
+  } catch (error) {
+    if (error?.statusCode === 503) {
+      res.status(503).json({ message: error.message });
+      return;
+    }
+
+    console.error("Assistant chat error:", error);
+    res.status(500).json({ message: "Unable to respond from the design assistant right now." });
+  }
+});
 
 router.get("/catalog", (_req, res) => {
   res.json({ rooms: listRoomCatalog() });
@@ -69,17 +153,17 @@ router.get("/catalog", (_req, res) => {
 
 router.get("/", auth, async (req, res) => {
   try {
-    const designs = await Design.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    if (isMongoUnavailable()) {
+      res.status(503).json({ message: "Database is reconnecting. Please refresh in a moment." });
+      return;
+    }
+
+    const designs = shouldUseLocalStore()
+      ? await listLocalDesignsByUserId(req.user.id)
+      : await Design.find({ userId: req.user.id }).sort({ createdAt: -1 });
+
     res.json({
-      designs: designs.map((design) => ({
-        id: design._id.toString(),
-        room: design.room,
-        roomLabel: design.roomLabel,
-        selectedItems: design.selectedItems,
-        inspirations: design.inspirations,
-        createdAt: design.createdAt,
-        updatedAt: design.updatedAt,
-      })),
+      designs: designs.map((design) => serializeDesign(design)),
     });
   } catch (error) {
     console.error("Fetch designs error:", error);
