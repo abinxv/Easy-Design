@@ -32,9 +32,17 @@ app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_req, res) => {
   const database = getDatabaseStatus();
+  const mongoConfigured = Boolean(process.env.MONGO_URI);
+  const usingLocalFallbackAfterMongoError =
+    mongoConfigured && database.persistenceMode === "local-file" && Boolean(database.lastError);
+
   res.json({
-    status: database.persistenceMode === "mongodb" && !database.ready ? "degraded" : "ok",
+    status:
+      (database.persistenceMode === "mongodb" && !database.ready) || usingLocalFallbackAfterMongoError
+        ? "degraded"
+        : "ok",
     service: "easy-design-backend",
+    mongoConfigured,
     persistence: database.persistenceMode,
     database,
   });
