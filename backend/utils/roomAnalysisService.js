@@ -24,6 +24,20 @@ const RECOVERY_PROMPTS_BY_LABEL = {
   bed: ["bed", "bed frame", "headboard", "mattress", "platform bed"],
 };
 
+const IMPORTANT_RECOVERY_OBJECTS = [
+  "bed",
+  "desk",
+  "chair",
+  "nightstand",
+  "wardrobe",
+  "dresser",
+  "lamp",
+  "sofa",
+  "table",
+  "mirror",
+  "rug",
+];
+
 const CANONICAL_LABELS = new Map([
   ["armchair", "chair"],
   ["bed", "bed"],
@@ -132,6 +146,7 @@ function getRoomAnalysisStatus() {
   const cloudinaryConfigured = Boolean(cloudinary.cloudName) && Boolean(cloudinary.apiKey) && Boolean(cloudinary.apiSecret);
   const roboflowConfigured = Boolean(pickEnv("ROBOFLOW_PRIVATE_KEY", "ROBOFLOW_API_KEY", "ROBOFLOW_PUBLISHABLE_API_KEY"));
   const serpApiConfigured = Boolean(pickEnv("SERPAPI_API_KEY", "SERP_PRIVATE_KEY", "SERP_API_KEY"));
+  const geminiConfigured = Boolean(pickEnv("GEMINI_API_KEY", "GEMINI_KEY"));
   const googleVisionConfigured = Boolean(
     pickEnv("GOOGLE_VISION_API_KEY", "GOOGLE_CLOUD_API_KEY", "GOOGLE_API_KEY")
   );
@@ -158,10 +173,17 @@ function getRoomAnalysisStatus() {
     );
   }
 
+  if (!geminiConfigured) {
+    notes.push(
+      "Gemini recovery is optional. Without it, very blended objects like beds may still be missed when Roboflow and Cloud Vision both fail."
+    );
+  }
+
   return {
     ready: roboflowConfigured && cloudinaryConfigured && (serpApiConfigured || googleVisionConfigured),
     services: {
       cloudinary: cloudinaryConfigured,
+      gemini: geminiConfigured,
       roboflow: roboflowConfigured,
       serpApi: serpApiConfigured,
       googleVision: googleVisionConfigured,
@@ -269,6 +291,22 @@ function hasDetectionForLabel(detections, label) {
   return detections.some((entry) => entry.label === label);
 }
 
+function getMissingTargets(detections, targets) {
+  return targets.filter((target) => !hasDetectionForLabel(detections, target));
+}
+
+function getFallbackTargets({ detections, requestedObjects, activeTargetObjects }) {
+  if (requestedObjects.length > 0) {
+    return getMissingTargets(detections, requestedObjects);
+  }
+
+  if (detections.length === 0) {
+    return activeTargetObjects;
+  }
+
+  return getMissingTargets(detections, IMPORTANT_RECOVERY_OBJECTS);
+}
+
 function getCloudinaryConfig() {
   const parsedUrl = parseCloudinaryUrl();
 
@@ -281,6 +319,14 @@ function getCloudinaryConfig() {
 
 function getSerpApiKey() {
   return pickEnv("SERPAPI_API_KEY", "SERP_PRIVATE_KEY", "SERP_API_KEY");
+}
+
+function getGeminiApiKey() {
+  return pickEnv("GEMINI_API_KEY", "GEMINI_KEY");
+}
+
+function getGeminiModel() {
+  return pickEnv("GEMINI_MODEL") || "gemini-2.5-flash";
 }
 
 function signCloudinaryParams(params, apiSecret) {
@@ -456,7 +502,7 @@ async function detectWithRoboflow({ imageUrl, imageDataUrl, targetObjects, allow
     };
   }
 
-    return {
+  return {
     detections: dedupeDetections(
       (payload?.predictions || [])
         .map((prediction) => normalizeRoboflowPrediction(prediction, imageSize, normalizedAllowedObjects))
@@ -496,6 +542,104 @@ async function callGoogleVision(request) {
   return payload?.responses?.[0] || null;
 }
 
+function getMimeTypeFromDataUrl(imageDataUrl) {
+  const match = String(imageDataUrl || "").match(/^data:([^;]+);base64,/);
+  return match?.[1] || "image/jpeg";
+}
+
+async function callGeminiObjectRecovery({ imageDataUrl, missingTargets }) {
+  const apiKey = getGeminiApiKey();
+
+  if (!apiKey || missingTargets.length === 0) {
+    return [];
+  }
+
+  const prompt = [
+    "Detect only the following prominent room objects if they are clearly visible.",
+    `Allowed labels: ${missingTargets.join(", ")}.`,
+    "Return a JSON array.",
+    'Each item must have: "label", "box_2d", and "confidence".',
+    '"box_2d" must be [ymin, xmin, ymax, xmax] normalized to 0-1000.',
+    "Do not include duplicates.",
+    "Do not include tiny decorative sub-parts.",
+    "Prefer the main full object instance when multiple candidates exist.",
+  ].join(" ");
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(getGeminiModel())}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                inline_data: {
+                  mime_type: getMimeTypeFromDataUrl(imageDataUrl),
+                  data: stripDataUrlPrefix(imageDataUrl),
+                },
+              },
+              {
+                text: prompt,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: "application/json",
+          responseJsonSchema: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                label: {
+                  type: "string",
+                  enum: missingTargets,
+                },
+                box_2d: {
+                  type: "array",
+                  minItems: 4,
+                  maxItems: 4,
+                  items: {
+                    type: "integer",
+                    minimum: 0,
+                    maximum: 1000,
+                  },
+                },
+                confidence: {
+                  type: "number",
+                  minimum: 0,
+                  maximum: 100,
+                },
+              },
+              required: ["label", "box_2d", "confidence"],
+            },
+          },
+        },
+      }),
+    }
+  );
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok || payload?.error) {
+    const message = payload?.error?.message || payload?.error || "Gemini recovery request failed.";
+    throw createHttpError(message, 502);
+  }
+
+  const text = payload?.candidates?.[0]?.content?.parts?.find((part) => typeof part?.text === "string")?.text || "[]";
+
+  try {
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    throw createHttpError("Gemini recovery returned an invalid JSON payload.", 502);
+  }
+}
+
 async function detectWithGoogleVision(imageUrl, imageSize, targetObjects) {
   const response = await callGoogleVision({
     image: {
@@ -519,6 +663,50 @@ async function detectWithGoogleVision(imageUrl, imageSize, targetObjects) {
 
   return dedupeDetections(
     imageProperties.map((entry) => normalizeGoogleObject(entry, imageSize, targetObjects)).filter(Boolean)
+  );
+}
+
+function normalizeGeminiObject(prediction, image, allowedObjects) {
+  const label = canonicalizeLabel(prediction?.label);
+
+  if (!allowedObjects.includes(label) || !Array.isArray(prediction?.box_2d) || prediction.box_2d.length !== 4) {
+    return null;
+  }
+
+  const [ymin, xmin, ymax, xmax] = prediction.box_2d.map((value) => clamp(Number(value || 0), 0, 1000));
+  const boundingBox = roundBox(
+    {
+      x: (xmin / 1000) * image.width,
+      y: (ymin / 1000) * image.height,
+      width: ((xmax - xmin) / 1000) * image.width,
+      height: ((ymax - ymin) / 1000) * image.height,
+    },
+    image
+  );
+
+  if (boundingBox.width < 1 || boundingBox.height < 1) {
+    return null;
+  }
+
+  const confidence = Number(prediction?.confidence || 0);
+
+  return {
+    id: randomUUID(),
+    label,
+    rawLabel: String(prediction?.label || label),
+    confidence: confidence > 1 ? confidence / 100 : confidence,
+    boundingBox,
+  };
+}
+
+async function detectWithGeminiRecovery({ imageDataUrl, imageSize, targetObjects }) {
+  const predictions = await callGeminiObjectRecovery({
+    imageDataUrl,
+    missingTargets: targetObjects,
+  });
+
+  return dedupeDetections(
+    predictions.map((entry) => normalizeGeminiObject(entry, imageSize, targetObjects)).filter(Boolean)
   );
 }
 
@@ -772,7 +960,15 @@ function buildWebMatches(webDetection, label, query) {
   return [...unique.slice(0, 4), ...buildStoreSearches(query)];
 }
 
-function pickDetectionProvider(status, usedGoogleFallback) {
+function pickDetectionProvider(status, usedGoogleFallback, usedGeminiFallback) {
+  if (status.services.roboflow && usedGoogleFallback && usedGeminiFallback) {
+    return "Roboflow YOLO-World with Google Vision and Gemini recovery";
+  }
+
+  if (status.services.roboflow && usedGeminiFallback) {
+    return "Roboflow YOLO-World with Gemini recovery";
+  }
+
   if (status.services.roboflow && usedGoogleFallback) {
     return "Roboflow YOLO-World with Google Vision fallback";
   }
@@ -898,6 +1094,7 @@ async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
   const warnings = [];
   let detections = [];
   let usedGoogleFallback = false;
+  let usedGeminiFallback = false;
   let imageSize = uploaded
     ? {
         width: Number(uploaded.width || 0),
@@ -948,12 +1145,11 @@ async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
     }
   }
 
-  const googleFallbackTargets =
-    detections.length === 0
-      ? activeTargetObjects
-      : (requestedObjects.length > 0 ? requestedObjects : ["bed"]).filter(
-          (target) => !hasDetectionForLabel(detections, target)
-        );
+  const googleFallbackTargets = getFallbackTargets({
+    detections,
+    requestedObjects,
+    activeTargetObjects,
+  });
 
   if (googleFallbackTargets.length > 0 && status.services.googleVision && remoteImageUrl) {
     try {
@@ -964,6 +1160,28 @@ async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
       }
     } catch (error) {
       warnings.push(`Google Vision object detection failed: ${error.message}`);
+    }
+  }
+
+  const geminiFallbackTargets = getFallbackTargets({
+    detections,
+    requestedObjects,
+    activeTargetObjects,
+  });
+
+  if (geminiFallbackTargets.length > 0 && status.services.gemini) {
+    try {
+      const geminiDetections = await detectWithGeminiRecovery({
+        imageDataUrl,
+        imageSize,
+        targetObjects: geminiFallbackTargets,
+      });
+      detections = mergeDetections(detections, geminiDetections);
+      if (geminiDetections.length > 0) {
+        usedGeminiFallback = true;
+      }
+    } catch (error) {
+      warnings.push(`Gemini recovery failed: ${error.message}`);
     }
   }
 
@@ -997,7 +1215,7 @@ async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
     requestedObjects,
     sourceImageUrl: uploaded?.secure_url || null,
     sourceImage: imageSize,
-    detectionProvider: pickDetectionProvider(status, usedGoogleFallback),
+    detectionProvider: pickDetectionProvider(status, usedGoogleFallback, usedGeminiFallback),
     warnings,
     detectedObjects,
   };

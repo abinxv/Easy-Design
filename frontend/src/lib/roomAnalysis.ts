@@ -4,6 +4,7 @@ export interface RoomAnalysisStatus {
   ready: boolean;
   services: {
     cloudinary: boolean;
+    gemini: boolean;
     roboflow: boolean;
     serpApi: boolean;
     googleVision: boolean;

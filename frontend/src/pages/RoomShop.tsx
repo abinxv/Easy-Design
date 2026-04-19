@@ -324,13 +324,14 @@ const RoomShop = () => {
                   <Badge variant={getServiceBadgeVariant(Boolean(status?.services.roboflow))}>Roboflow</Badge>
                   <Badge variant={getServiceBadgeVariant(Boolean(status?.services.serpApi))}>SerpApi Lens</Badge>
                   <Badge variant={getServiceBadgeVariant(Boolean(status?.services.googleVision))}>Google Vision</Badge>
+                  <Badge variant={getServiceBadgeVariant(Boolean(status?.services.gemini))}>Gemini Recovery</Badge>
                 </div>
 
                 <div className="rounded-2xl border border-dashed border-primary/30 bg-accent/40 p-5">
                   <label className="block text-sm font-medium text-foreground mb-3">Choose a room image</label>
                   <Input key={fileInputKey} type="file" accept="image/*" onChange={handleFileChange} />
                   <p className="text-xs text-muted-foreground mt-3">
-                    Best results come from one clear room photo where the main furniture is fully visible.
+                    Best results come from one clear room photo where the main furniture is fully visible. Detection runs Roboflow first, then Google Vision, and only uses Gemini as a last-resort recovery pass.
                   </p>
                 </div>
 
