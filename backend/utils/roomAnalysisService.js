@@ -20,10 +20,17 @@ const DEFAULT_TARGET_OBJECTS = [
   "television",
 ];
 
+const RECOVERY_PROMPTS_BY_LABEL = {
+  bed: ["bed", "bed frame", "headboard", "mattress", "platform bed"],
+};
+
 const CANONICAL_LABELS = new Map([
   ["armchair", "chair"],
   ["bed", "bed"],
   ["bed frame", "bed"],
+  ["headboard", "bed"],
+  ["mattress", "bed"],
+  ["platform bed", "bed"],
   ["bookcase", "bookshelf"],
   ["bookshelf", "bookshelf"],
   ["cabinet", "cabinet"],
@@ -124,6 +131,7 @@ function getRoomAnalysisStatus() {
   const cloudinary = getCloudinaryConfig();
   const cloudinaryConfigured = Boolean(cloudinary.cloudName) && Boolean(cloudinary.apiKey) && Boolean(cloudinary.apiSecret);
   const roboflowConfigured = Boolean(pickEnv("ROBOFLOW_PRIVATE_KEY", "ROBOFLOW_API_KEY", "ROBOFLOW_PUBLISHABLE_API_KEY"));
+  const serpApiConfigured = Boolean(pickEnv("SERPAPI_API_KEY", "SERP_PRIVATE_KEY", "SERP_API_KEY"));
   const googleVisionConfigured = Boolean(
     pickEnv("GOOGLE_VISION_API_KEY", "GOOGLE_CLOUD_API_KEY", "GOOGLE_API_KEY")
   );
@@ -132,7 +140,7 @@ function getRoomAnalysisStatus() {
 
   if (!cloudinaryConfigured) {
     notes.push(
-      "Cloudinary is optional. Add CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_SECRET if you want hosted crop URLs and stronger visual web matches."
+      "Cloudinary is required for hosted crop URLs, which the visual product matching pipeline depends on."
     );
   }
 
@@ -140,17 +148,22 @@ function getRoomAnalysisStatus() {
     notes.push("Add a Roboflow API key so the backend can detect room objects from uploaded photos.");
   }
 
+  if (!serpApiConfigured) {
+    notes.push("Add a SerpApi key so each detected object can be matched through Google Lens products.");
+  }
+
   if (!googleVisionConfigured) {
     notes.push(
-      "Google Vision web matching is optional. Without it, the feature falls back to generated Google Shopping and store search links."
+      "Google Vision is optional. Without it, the feature cannot fall back to web matches when Lens returns nothing."
     );
   }
 
   return {
-    ready: roboflowConfigured,
+    ready: roboflowConfigured && cloudinaryConfigured && (serpApiConfigured || googleVisionConfigured),
     services: {
       cloudinary: cloudinaryConfigured,
       roboflow: roboflowConfigured,
+      serpApi: serpApiConfigured,
       googleVision: googleVisionConfigured,
     },
     notes,
@@ -168,6 +181,14 @@ function normalizeLabel(label) {
 function canonicalizeLabel(label) {
   const normalized = normalizeLabel(label);
   return CANONICAL_LABELS.get(normalized) || normalized;
+}
+
+function normalizeTargetObjects(targetObjects) {
+  if (!Array.isArray(targetObjects)) {
+    return [];
+  }
+
+  return [...new Set(targetObjects.map((item) => canonicalizeLabel(item)).filter((item) => DEFAULT_TARGET_OBJECTS.includes(item)))];
 }
 
 function clamp(value, min, max) {
@@ -240,6 +261,14 @@ function dedupeDetections(detections) {
   return unique;
 }
 
+function mergeDetections(...groups) {
+  return dedupeDetections(groups.flat().filter(Boolean));
+}
+
+function hasDetectionForLabel(detections, label) {
+  return detections.some((entry) => entry.label === label);
+}
+
 function getCloudinaryConfig() {
   const parsedUrl = parseCloudinaryUrl();
 
@@ -248,6 +277,10 @@ function getCloudinaryConfig() {
     apiKey: pickEnv("CLOUDINARY_API_KEY") || parsedUrl?.apiKey || "",
     apiSecret: pickEnv("CLOUDINARY_API_SECRET") || parsedUrl?.apiSecret || "",
   };
+}
+
+function getSerpApiKey() {
+  return pickEnv("SERPAPI_API_KEY", "SERP_PRIVATE_KEY", "SERP_API_KEY");
 }
 
 function signCloudinaryParams(params, apiSecret) {
@@ -277,7 +310,6 @@ async function uploadSourceImage(imageDataUrl, fileName) {
   const folder = "easy-design/room-shop";
   const publicId = `room-${Date.now()}-${randomUUID()}`;
   const paramsToSign = {
-    filename_override: fileName ? String(fileName) : undefined,
     folder,
     public_id: publicId,
     timestamp,
@@ -291,10 +323,6 @@ async function uploadSourceImage(imageDataUrl, fileName) {
   body.append("timestamp", String(timestamp));
   body.append("api_key", apiKey);
   body.append("signature", signature);
-
-  if (fileName) {
-    body.append("filename_override", String(fileName));
-  }
 
   const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
     method: "POST",
@@ -315,10 +343,10 @@ function stripDataUrlPrefix(imageDataUrl) {
   return String(imageDataUrl || "").replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/, "");
 }
 
-function normalizeRoboflowPrediction(prediction, image) {
+function normalizeRoboflowPrediction(prediction, image, allowedObjects) {
   const label = canonicalizeLabel(prediction.class || prediction.class_name);
 
-  if (!DEFAULT_TARGET_OBJECTS.includes(label)) {
+  if (!allowedObjects.includes(label)) {
     return null;
   }
 
@@ -359,10 +387,10 @@ function normalizedVerticesToBox(vertices, image) {
   );
 }
 
-function normalizeGoogleObject(prediction, image) {
+function normalizeGoogleObject(prediction, image, allowedObjects) {
   const label = canonicalizeLabel(prediction.name);
 
-  if (!DEFAULT_TARGET_OBJECTS.includes(label)) {
+  if (!allowedObjects.includes(label)) {
     return null;
   }
 
@@ -375,8 +403,9 @@ function normalizeGoogleObject(prediction, image) {
   };
 }
 
-async function detectWithRoboflow({ imageUrl, imageDataUrl }) {
+async function detectWithRoboflow({ imageUrl, imageDataUrl, targetObjects, allowedObjects, confidenceOverride }) {
   const apiKey = pickEnv("ROBOFLOW_PRIVATE_KEY", "ROBOFLOW_API_KEY", "ROBOFLOW_PUBLISHABLE_API_KEY");
+  const normalizedAllowedObjects = Array.isArray(allowedObjects) && allowedObjects.length > 0 ? allowedObjects : targetObjects;
 
   if (!apiKey) {
     return {
@@ -401,8 +430,8 @@ async function detectWithRoboflow({ imageUrl, imageDataUrl }) {
             type: "base64",
             value: stripDataUrlPrefix(imageDataUrl),
           },
-      text: DEFAULT_TARGET_OBJECTS,
-      confidence: 0.16,
+      text: targetObjects,
+      confidence: confidenceOverride ?? (targetObjects.length <= 3 ? 0.08 : 0.16),
       yolo_world_version_id: "l",
     }),
   });
@@ -427,10 +456,10 @@ async function detectWithRoboflow({ imageUrl, imageDataUrl }) {
     };
   }
 
-  return {
+    return {
     detections: dedupeDetections(
       (payload?.predictions || [])
-        .map((prediction) => normalizeRoboflowPrediction(prediction, imageSize))
+        .map((prediction) => normalizeRoboflowPrediction(prediction, imageSize, normalizedAllowedObjects))
         .filter(Boolean)
     ),
     imageSize,
@@ -467,7 +496,7 @@ async function callGoogleVision(request) {
   return payload?.responses?.[0] || null;
 }
 
-async function detectWithGoogleVision(imageUrl, imageSize) {
+async function detectWithGoogleVision(imageUrl, imageSize, targetObjects) {
   const response = await callGoogleVision({
     image: {
       source: {
@@ -489,8 +518,119 @@ async function detectWithGoogleVision(imageUrl, imageSize) {
   }
 
   return dedupeDetections(
-    imageProperties.map((entry) => normalizeGoogleObject(entry, imageSize)).filter(Boolean)
+    imageProperties.map((entry) => normalizeGoogleObject(entry, imageSize, targetObjects)).filter(Boolean)
   );
+}
+
+function getDetectionPriority(detection) {
+  return detection.confidence * detection.boundingBox.width * detection.boundingBox.height;
+}
+
+function pickBestDetectionsForTargets(detections, targetObjects) {
+  const bestByLabel = new Map();
+
+  detections.forEach((detection) => {
+    const current = bestByLabel.get(detection.label);
+    const score = getDetectionPriority(detection);
+
+    if (!current || score > current.score) {
+      bestByLabel.set(detection.label, {
+        detection,
+        score,
+      });
+    }
+  });
+
+  return targetObjects
+    .map((target) => bestByLabel.get(target)?.detection || null)
+    .filter(Boolean);
+}
+
+async function searchWithSerpApiLens(imageUrl, type) {
+  const apiKey = getSerpApiKey();
+
+  if (!apiKey) {
+    return null;
+  }
+
+  const params = new URLSearchParams({
+    api_key: apiKey,
+    country: pickEnv("SERPAPI_COUNTRY") || "in",
+    engine: "google_lens",
+    hl: pickEnv("SERPAPI_HL") || "en",
+    type,
+    url: imageUrl,
+  });
+  const response = await fetch(`https://serpapi.com/search.json?${params.toString()}`);
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok || payload?.error) {
+    const message = payload?.error || "SerpApi Google Lens request failed.";
+    throw createHttpError(message, 502);
+  }
+
+  return payload;
+}
+
+function extractLensMatches(payload, mode) {
+  const matches = payload?.visual_matches || [];
+  const unique = [];
+  const seen = new Set();
+
+  matches.forEach((item) => {
+    const url = String(item?.link || "").trim();
+
+    if (!url || seen.has(url)) {
+      return;
+    }
+
+    seen.add(url);
+    unique.push({
+      kind: "product",
+      source: String(item?.source || getHost(url) || "Google Lens"),
+      title: stripHtml(item?.title) || "Visual product match",
+      url,
+      provider: mode === "lens_products" ? "Google Lens products" : "Google Lens visual matches",
+      thumbnailUrl: String(item?.thumbnail || item?.image || "").trim() || null,
+      price: item?.price
+        ? {
+            amount: Number.isFinite(Number(item.price.extracted_value)) ? Number(item.price.extracted_value) : null,
+            currency: String(item.price.currency || "").trim() || null,
+            value: String(item.price.value || "").trim() || null,
+          }
+        : null,
+      inStock: typeof item?.in_stock === "boolean" ? item.in_stock : null,
+    });
+  });
+
+  return unique.slice(0, 6);
+}
+
+async function findLensMatches(imageUrl) {
+  const productsPayload = await searchWithSerpApiLens(imageUrl, "products");
+  const productMatches = extractLensMatches(productsPayload, "lens_products");
+
+  if (productMatches.length > 0) {
+    return {
+      matchMode: "lens_products",
+      matches: productMatches,
+    };
+  }
+
+  const visualPayload = await searchWithSerpApiLens(imageUrl, "visual_matches");
+  const visualMatches = extractLensMatches(visualPayload, "lens_visual_matches");
+
+  if (visualMatches.length > 0) {
+    return {
+      matchMode: "lens_visual_matches",
+      matches: visualMatches,
+    };
+  }
+
+  return {
+    matchMode: "lens_none",
+    matches: [],
+  };
 }
 
 function buildCropUrl(sourceUrl, box) {
@@ -644,8 +784,106 @@ function pickDetectionProvider(status, usedGoogleFallback) {
   return "Google Vision Object Localization";
 }
 
-async function analyzeRoomPhoto({ imageDataUrl, fileName }) {
+function serializeDetectedObject(detection, sourceImageUrl) {
+  return {
+    id: detection.id,
+    label: detection.label,
+    rawLabel: detection.rawLabel,
+    confidence: Number(detection.confidence.toFixed(3)),
+    boundingBox: detection.boundingBox,
+    cropImageUrl: sourceImageUrl ? buildCropUrl(sourceImageUrl, detection.boundingBox) : null,
+  };
+}
+
+function normalizeDetectedObjectInputs(detectedObjects, sourceImage, sourceImageUrl) {
+  if (!Array.isArray(detectedObjects)) {
+    return [];
+  }
+
+  return detectedObjects
+    .map((entry, index) => {
+      const label = canonicalizeLabel(entry?.label || entry?.rawLabel);
+
+      if (!DEFAULT_TARGET_OBJECTS.includes(label)) {
+        return null;
+      }
+
+      const boundingBox = roundBox(
+        {
+          x: Number(entry?.boundingBox?.x || 0),
+          y: Number(entry?.boundingBox?.y || 0),
+          width: Number(entry?.boundingBox?.width || 0),
+          height: Number(entry?.boundingBox?.height || 0),
+        },
+        sourceImage
+      );
+
+      if (boundingBox.width < 1 || boundingBox.height < 1) {
+        return null;
+      }
+
+      return {
+        id: String(entry?.id || `detected-${index + 1}`),
+        label,
+        rawLabel: String(entry?.rawLabel || entry?.label || label),
+        confidence: Number(entry?.confidence || 0),
+        boundingBox,
+        cropImageUrl: String(entry?.cropImageUrl || "").trim() || (sourceImageUrl ? buildCropUrl(sourceImageUrl, boundingBox) : null),
+      };
+    })
+    .filter(Boolean);
+}
+
+async function buildMatchedObject({ entry, status, warnings }) {
+  let webDetection = null;
+  let webEntities = [];
+  let searchQuery = "";
+  let matchMode = "no_matches";
+  let matches = [];
+
+  if (status.services.serpApi && entry.cropImageUrl) {
+    try {
+      const lensResult = await findLensMatches(entry.cropImageUrl);
+      matches = lensResult.matches;
+      matchMode = lensResult.matchMode;
+    } catch (error) {
+      warnings.push(`Google Lens matching failed for ${entry.label}: ${error.message}`);
+    }
+  }
+
+  if (matches.length === 0 && status.services.googleVision && entry.cropImageUrl) {
+    try {
+      webDetection = await detectWebMatches(entry.cropImageUrl);
+    } catch (error) {
+      warnings.push(`Google web matching failed for ${entry.label}: ${error.message}`);
+    }
+  }
+
+  if (matches.length === 0) {
+    webEntities = extractWebEntities(webDetection, entry.label);
+    searchQuery = buildSearchQuery(entry.label, webEntities);
+    matches = buildWebMatches(webDetection, entry.label, searchQuery);
+    matchMode = matches.length > 0 ? "google_vision_fallback" : matchMode;
+  }
+
+  return {
+    id: entry.id,
+    label: entry.label,
+    rawLabel: entry.rawLabel,
+    confidence: Number(entry.confidence.toFixed(3)),
+    boundingBox: entry.boundingBox,
+    cropImageUrl: entry.cropImageUrl,
+    matchMode,
+    searchQuery,
+    webEntities,
+    matches,
+  };
+}
+
+async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
   const status = getRoomAnalysisStatus();
+  const requestedObjects = normalizeTargetObjects(targetObjects);
+  const activeTargetObjects = requestedObjects.length > 0 ? requestedObjects : DEFAULT_TARGET_OBJECTS;
 
   if (!status.ready) {
     throw createHttpError(status.notes[0] || "Room analysis is not configured yet.", 503);
@@ -675,6 +913,8 @@ async function analyzeRoomPhoto({ imageDataUrl, fileName }) {
       const roboflowResult = await detectWithRoboflow({
         imageUrl: remoteImageUrl || undefined,
         imageDataUrl,
+        targetObjects: activeTargetObjects,
+        allowedObjects: activeTargetObjects,
       });
       detections = roboflowResult.detections;
       if (!imageSize.width || !imageSize.height) {
@@ -685,75 +925,162 @@ async function analyzeRoomPhoto({ imageDataUrl, fileName }) {
     }
   }
 
-  if (detections.length === 0 && status.services.googleVision && remoteImageUrl) {
+  const recoveryTargets = (requestedObjects.length > 0 ? requestedObjects : ["bed"]).filter(
+    (target) => RECOVERY_PROMPTS_BY_LABEL[target] && !hasDetectionForLabel(detections, target)
+  );
+
+  for (const target of recoveryTargets) {
     try {
-      detections = await detectWithGoogleVision(remoteImageUrl, imageSize);
-      usedGoogleFallback = true;
+      const recoveryResult = await detectWithRoboflow({
+        imageUrl: remoteImageUrl || undefined,
+        imageDataUrl,
+        targetObjects: RECOVERY_PROMPTS_BY_LABEL[target],
+        allowedObjects: [target],
+        confidenceOverride: 0.05,
+      });
+      detections = mergeDetections(detections, recoveryResult.detections);
+
+      if ((!imageSize.width || !imageSize.height) && recoveryResult.imageSize) {
+        imageSize = recoveryResult.imageSize;
+      }
+    } catch (error) {
+      warnings.push(`Supplemental ${target} detection failed: ${error.message}`);
+    }
+  }
+
+  const googleFallbackTargets =
+    detections.length === 0
+      ? activeTargetObjects
+      : (requestedObjects.length > 0 ? requestedObjects : ["bed"]).filter(
+          (target) => !hasDetectionForLabel(detections, target)
+        );
+
+  if (googleFallbackTargets.length > 0 && status.services.googleVision && remoteImageUrl) {
+    try {
+      const googleDetections = await detectWithGoogleVision(remoteImageUrl, imageSize, googleFallbackTargets);
+      detections = mergeDetections(detections, googleDetections);
+      if (googleDetections.length > 0) {
+        usedGoogleFallback = true;
+      }
     } catch (error) {
       warnings.push(`Google Vision object detection failed: ${error.message}`);
     }
   }
 
-  const limitedDetections = detections
+  const candidateDetections =
+    requestedObjects.length > 0 ? pickBestDetectionsForTargets(detections, requestedObjects) : detections;
+
+  const detectedObjects = candidateDetections
     .filter((entry) => entry.boundingBox.width >= 30 && entry.boundingBox.height >= 30)
-    .slice(0, 8)
+    .slice(0, requestedObjects.length > 0 ? requestedObjects.length : 8)
     .map((entry) => ({
       ...entry,
       boundingBox: padBox(entry.boundingBox, imageSize),
-    }));
-
-  const detectedObjects = (
-    await Promise.allSettled(
-      limitedDetections.map(async (entry) => {
-        const cropImageUrl = remoteImageUrl ? buildCropUrl(remoteImageUrl, entry.boundingBox) : null;
-        let webDetection = null;
-
-        if (status.services.googleVision && cropImageUrl) {
-          try {
-            webDetection = await detectWebMatches(cropImageUrl);
-          } catch (error) {
-            warnings.push(`Google web matching failed for ${entry.label}: ${error.message}`);
-          }
-        }
-
-        const webEntities = extractWebEntities(webDetection, entry.label);
-        const searchQuery = buildSearchQuery(entry.label, webEntities);
-
-        return {
-          id: entry.id,
-          label: entry.label,
-          rawLabel: entry.rawLabel,
-          confidence: Number(entry.confidence.toFixed(3)),
-          boundingBox: entry.boundingBox,
-          cropImageUrl,
-          searchQuery,
-          webEntities,
-          matches: buildWebMatches(webDetection, entry.label, searchQuery),
-        };
-      })
-    )
-  )
-    .filter((result) => result.status === "fulfilled")
-    .map((result) => result.value);
+    }))
+    .map((entry) => serializeDetectedObject(entry, remoteImageUrl));
 
   if (detectedObjects.length === 0) {
     warnings.push("No strong furniture matches were found in this image. Try a clearer room photo with more visible objects.");
   }
 
+  if (requestedObjects.length > 0) {
+    const detectedLabels = new Set(detectedObjects.map((item) => item.label));
+    const missingObjects = requestedObjects.filter((item) => !detectedLabels.has(item));
+
+    if (missingObjects.length > 0) {
+      warnings.push(`Could not confidently isolate: ${missingObjects.join(", ")}.`);
+    }
+  }
+
   return {
     analysisId: uploaded?.public_id || `room-analysis-${Date.now()}`,
+    requestedObjects,
     sourceImageUrl: uploaded?.secure_url || null,
     sourceImage: imageSize,
     detectionProvider: pickDetectionProvider(status, usedGoogleFallback),
-    searchProvider: status.services.googleVision && remoteImageUrl
-      ? "Google Vision web matching plus generated shopping links"
-      : "Generated Google and store search links",
     warnings,
     detectedObjects,
   };
 }
 
+async function matchDetectedObjects({
+  analysisId,
+  detectionProvider,
+  detectedObjects,
+  selectedObjectIds,
+  sourceImage,
+  sourceImageUrl,
+}) {
+  const status = getRoomAnalysisStatus();
+  const warnings = [];
+
+  if (!status.services.serpApi && !status.services.googleVision) {
+    throw createHttpError("Product matching is not configured yet.", 503);
+  }
+
+  if (!sourceImageUrl) {
+    throw createHttpError("The uploaded room image is missing, so matching cannot continue.", 400);
+  }
+
+  if (!sourceImage?.width || !sourceImage?.height) {
+    throw createHttpError("The uploaded room image size is missing, so matching cannot continue.", 400);
+  }
+
+  const normalizedObjects = normalizeDetectedObjectInputs(detectedObjects, sourceImage, sourceImageUrl);
+  const selectedIds = new Set(
+    Array.isArray(selectedObjectIds) ? selectedObjectIds.map((item) => String(item || "").trim()).filter(Boolean) : []
+  );
+  const objectsToMatch = normalizedObjects.filter((entry) => selectedIds.size === 0 || selectedIds.has(entry.id));
+
+  if (objectsToMatch.length === 0) {
+    throw createHttpError("Select at least one detected object before finding product matches.", 400);
+  }
+
+  const matchedObjects = (
+    await Promise.allSettled(objectsToMatch.map((entry) => buildMatchedObject({ entry, status, warnings })))
+  )
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value);
+
+  if (matchedObjects.length === 0) {
+    warnings.push("No product matches were found for the selected objects.");
+  }
+
+  return {
+    analysisId: String(analysisId || `room-analysis-${Date.now()}`),
+    selectedObjectIds: objectsToMatch.map((entry) => entry.id),
+    sourceImageUrl,
+    sourceImage,
+    detectionProvider: detectionProvider || "Roboflow YOLO-World",
+    searchProvider: status.services.serpApi
+      ? "SerpApi Google Lens products with Google Vision fallback"
+      : "Google Vision web matching fallback only",
+    warnings,
+    detectedObjects: matchedObjects,
+  };
+}
+
+async function analyzeRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
+  const detection = await detectRoomPhoto({ imageDataUrl, fileName, targetObjects });
+  const matching = await matchDetectedObjects({
+    analysisId: detection.analysisId,
+    detectionProvider: detection.detectionProvider,
+    detectedObjects: detection.detectedObjects,
+    selectedObjectIds: detection.detectedObjects.map((item) => item.id),
+    sourceImage: detection.sourceImage,
+    sourceImageUrl: detection.sourceImageUrl,
+  });
+
+  return {
+    ...matching,
+    requestedObjects: detection.requestedObjects,
+    warnings: [...new Set([...detection.warnings, ...matching.warnings])],
+  };
+}
+
 module.exports = {
   analyzeRoomPhoto,
+  detectRoomPhoto,
   getRoomAnalysisStatus,
+  matchDetectedObjects,
 };

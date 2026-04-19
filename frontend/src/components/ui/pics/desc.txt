@@ -1,1 +1,0 @@
-kitchen-turquoise : turquoise, tiled kitchen
