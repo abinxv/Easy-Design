@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Wand2, Palette, LogIn, LayoutDashboard } from "lucide-react";
+import { Home, Wand2, Palette, LogIn, LayoutDashboard, ScanSearch } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 const Navbar = () => {
@@ -10,6 +10,7 @@ const Navbar = () => {
   const links = [
     { to: "/", label: "Home", icon: Home },
     { to: "/analyze", label: "Design Room", icon: Wand2 },
+    { to: "/room-shop", label: "Room Shop", icon: ScanSearch },
     { to: "/styles", label: "Style Guide", icon: Palette },
   ];
 
