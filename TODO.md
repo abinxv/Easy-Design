@@ -13,3 +13,5 @@ to do
   (if above doesnt work then do manual images and make tags more detailed)
 
 6. make the project report
+
+7. need to update this
