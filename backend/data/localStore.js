@@ -9,6 +9,8 @@ function createDefaultStore() {
   return {
     users: [],
     designs: [],
+    roomShopCarts: [],
+    roomUploads: [],
   };
 }
 
@@ -16,6 +18,8 @@ function normalizeStore(store) {
   return {
     users: Array.isArray(store?.users) ? store.users : [],
     designs: Array.isArray(store?.designs) ? store.designs : [],
+    roomShopCarts: Array.isArray(store?.roomShopCarts) ? store.roomShopCarts : [],
+    roomUploads: Array.isArray(store?.roomUploads) ? store.roomUploads : [],
   };
 }
 
@@ -138,6 +142,89 @@ async function listLocalDesignsByUserId(userId) {
     .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
 }
 
+async function getLocalRoomShopCartByUserId(userId) {
+  const store = await readStore();
+  return store.roomShopCarts.find((cart) => cart.userId === userId) || null;
+}
+
+async function upsertLocalRoomShopCart({ userId, items, suggestions }) {
+  return queueMutation(async () => {
+    const store = await readStore();
+    const timestamp = new Date().toISOString();
+    const existingIndex = store.roomShopCarts.findIndex((cart) => cart.userId === userId);
+    const existingCart = existingIndex >= 0 ? store.roomShopCarts[existingIndex] : null;
+    const cart = {
+      id: existingCart?.id || randomUUID(),
+      userId,
+      items,
+      suggestions,
+      createdAt: existingCart?.createdAt || timestamp,
+      updatedAt: timestamp,
+    };
+
+    if (existingIndex >= 0) {
+      store.roomShopCarts[existingIndex] = cart;
+    } else {
+      store.roomShopCarts.push(cart);
+    }
+
+    await writeStore(store);
+    return cart;
+  });
+}
+
+async function clearLocalRoomShopCart(userId) {
+  return queueMutation(async () => {
+    const store = await readStore();
+    store.roomShopCarts = store.roomShopCarts.filter((cart) => cart.userId !== userId);
+    await writeStore(store);
+  });
+}
+
+async function createLocalRoomUpload({
+  userId,
+  analysisId,
+  fileName,
+  sourceImageUrl,
+  sourceImage,
+  detectionProvider,
+  searchProvider,
+  warnings,
+  detectedObjects,
+}) {
+  return queueMutation(async () => {
+    const store = await readStore();
+    const timestamp = new Date().toISOString();
+    const upload = {
+      id: randomUUID(),
+      userId,
+      analysisId,
+      fileName,
+      sourceImageUrl,
+      sourceImage,
+      detectionProvider,
+      searchProvider,
+      warnings,
+      detectedObjects,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
+
+    store.roomUploads.push(upload);
+    await writeStore(store);
+
+    return upload;
+  });
+}
+
+async function listLocalRoomUploadsByUserId(userId) {
+  const store = await readStore();
+
+  return store.roomUploads
+    .filter((upload) => upload.userId === userId)
+    .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
+}
+
 module.exports = {
   LOCAL_STORE_PATH,
   toSafeLocalUser,
@@ -147,4 +234,9 @@ module.exports = {
   createLocalUser,
   createLocalDesign,
   listLocalDesignsByUserId,
+  getLocalRoomShopCartByUserId,
+  upsertLocalRoomShopCart,
+  clearLocalRoomShopCart,
+  createLocalRoomUpload,
+  listLocalRoomUploadsByUserId,
 };

@@ -5,6 +5,7 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const { connectDB, getDatabaseStatus } = require("./config/db");
 const authRoutes = require("./routes/auth");
+const chatbotRoutes = require("./routes/chatbot");
 const designRoutes = require("./routes/designs");
 const roomAnalysisRoutes = require("./routes/roomAnalysis");
 
@@ -55,6 +56,7 @@ app.get("/health", (_req, res) => {
 
 function mountApiRoutes(prefix) {
   app.use(`${prefix}/auth`, authRoutes);
+  app.use(`${prefix}/chatbot`, chatbotRoutes);
   app.use(`${prefix}/designs`, designRoutes);
   app.use(`${prefix}/room-analysis`, roomAnalysisRoutes);
 }

@@ -73,6 +73,53 @@ export interface RoomAnalysisResponse {
   searchProvider: string;
   warnings: string[];
   detectedObjects: MatchedRoomObject[];
+  savedUpload?: RoomUpload | null;
+}
+
+export interface RoomUpload {
+  id: string;
+  analysisId: string;
+  fileName: string;
+  sourceImageUrl: string | null;
+  sourceImage: {
+    width: number;
+    height: number;
+  };
+  detectionProvider: string;
+  searchProvider: string;
+  warnings: string[];
+  detectedObjects: MatchedRoomObject[];
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface RoomShopCartItem {
+  id: string;
+  objectId: string;
+  label: string;
+  title: string;
+  source: string;
+  url: string;
+  thumbnailUrl: string | null;
+  provider?: string;
+  price?: RoomMatch["price"];
+  addedAt: string;
+}
+
+export interface RoomShopCartSuggestion {
+  id: string;
+  title: string;
+  category: string;
+  reason: string;
+  searchQuery: string;
+}
+
+export interface RoomShopCart {
+  id: string | null;
+  items: RoomShopCartItem[];
+  suggestions: RoomShopCartSuggestion[];
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 export function fetchRoomAnalysisStatus() {
@@ -123,6 +170,40 @@ export function analyzeRoomPhoto(
   token?: string | null
 ) {
   return apiRequest<RoomAnalysisResponse>("/room-analysis/analyze", {
+    method: "POST",
+    token,
+    body: input,
+  });
+}
+
+export function fetchRoomUploads(token: string) {
+  return apiRequest<{ uploads: RoomUpload[] }>("/room-analysis/uploads", { token });
+}
+
+export function fetchRoomShopCart(token: string) {
+  return apiRequest<{ cart: RoomShopCart }>("/room-analysis/cart", { token });
+}
+
+export function saveRoomShopCart(input: { items: RoomShopCartItem[] }, token: string) {
+  return apiRequest<{ cart: RoomShopCart }>("/room-analysis/cart", {
+    method: "PUT",
+    token,
+    body: input,
+  });
+}
+
+export function clearRoomShopCart(token: string) {
+  return apiRequest<{ cart: RoomShopCart }>("/room-analysis/cart", {
+    method: "DELETE",
+    token,
+  });
+}
+
+export function generateRoomShopCartSuggestions(
+  input: { items: RoomShopCartItem[] },
+  token?: string | null
+) {
+  return apiRequest<{ cart: RoomShopCart; suggestions: RoomShopCartSuggestion[] }>("/room-analysis/cart/suggestions", {
     method: "POST",
     token,
     body: input,

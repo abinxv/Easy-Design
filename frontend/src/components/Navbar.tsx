@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Wand2, Palette, LogIn, LayoutDashboard, ScanSearch } from "lucide-react";
+import { Bot, Home, Wand2, Palette, LogIn, LayoutDashboard, ScanSearch, ShoppingCart } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 const Navbar = () => {
@@ -11,6 +11,8 @@ const Navbar = () => {
     { to: "/", label: "Home", icon: Home },
     { to: "/analyze", label: "Design Room", icon: Wand2 },
     { to: "/room-shop", label: "Room Shop", icon: ScanSearch },
+    { to: "/room-cart", label: "Room Cart", icon: ShoppingCart },
+    { to: "/ai-chatbot", label: "AI Chatbot", icon: Bot },
     { to: "/styles", label: "Style Guide", icon: Palette },
   ];
 
@@ -44,7 +46,7 @@ const Navbar = () => {
                 }`}
               >
                 <link.icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{link.label}</span>
+                <span className="hidden lg:inline">{link.label}</span>
               </Link>
             );
           })}
@@ -59,7 +61,7 @@ const Navbar = () => {
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden sm:inline">Dashboard</span>
+              <span className="hidden lg:inline">Dashboard</span>
             </Link>
           ) : (
             <Link
@@ -67,7 +69,7 @@ const Navbar = () => {
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium gradient-warm text-primary-foreground shadow-warm ml-2"
             >
               <LogIn className="w-4 h-4" />
-              <span className="hidden sm:inline">Sign In</span>
+              <span className="hidden lg:inline">Sign In</span>
             </Link>
           )}
         </div>

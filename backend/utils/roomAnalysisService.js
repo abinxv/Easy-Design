@@ -175,7 +175,7 @@ function getRoomAnalysisStatus() {
 
   if (!geminiConfigured) {
     notes.push(
-      "Gemini recovery is optional. Without it, very blended objects like beds may still be missed when Roboflow and Cloud Vision both fail."
+      "Extra object recovery is optional. Without it, very blended objects like beds may still be missed when Roboflow and Cloud Vision both fail."
     );
   }
 
@@ -626,7 +626,7 @@ async function callGeminiObjectRecovery({ imageDataUrl, missingTargets }) {
   const payload = await response.json().catch(() => null);
 
   if (!response.ok || payload?.error) {
-    const message = payload?.error?.message || payload?.error || "Gemini recovery request failed.";
+    const message = payload?.error?.message || payload?.error || "Object recovery request failed.";
     throw createHttpError(message, 502);
   }
 
@@ -636,7 +636,7 @@ async function callGeminiObjectRecovery({ imageDataUrl, missingTargets }) {
     const parsed = JSON.parse(text);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
-    throw createHttpError("Gemini recovery returned an invalid JSON payload.", 502);
+    throw createHttpError("Object recovery returned an invalid response.", 502);
   }
 }
 
@@ -962,11 +962,11 @@ function buildWebMatches(webDetection, label, query) {
 
 function pickDetectionProvider(status, usedGoogleFallback, usedGeminiFallback) {
   if (status.services.roboflow && usedGoogleFallback && usedGeminiFallback) {
-    return "Roboflow YOLO-World with Google Vision and Gemini recovery";
+    return "Roboflow YOLO-World with Google Vision and recovery pass";
   }
 
   if (status.services.roboflow && usedGeminiFallback) {
-    return "Roboflow YOLO-World with Gemini recovery";
+    return "Roboflow YOLO-World with recovery pass";
   }
 
   if (status.services.roboflow && usedGoogleFallback) {
@@ -1181,7 +1181,7 @@ async function detectRoomPhoto({ imageDataUrl, fileName, targetObjects }) {
         usedGeminiFallback = true;
       }
     } catch (error) {
-      warnings.push(`Gemini recovery failed: ${error.message}`);
+      warnings.push("Object recovery failed. Continuing with the available detections.");
     }
   }
 

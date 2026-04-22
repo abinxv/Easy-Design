@@ -11,7 +11,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import RoomCart from "./pages/RoomCart";
 import RoomShop from "./pages/RoomShop";
+import AiChatbot from "./pages/AiChatbot";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
             <Route path="/analyze" element={<Analyze />} />
             <Route path="/styles" element={<Styles />} />
             <Route path="/room-shop" element={<RoomShop />} />
+            <Route path="/room-cart" element={<RoomCart />} />
+            <Route path="/ai-chatbot" element={<AiChatbot />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
