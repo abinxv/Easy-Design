@@ -1,135 +1,204 @@
 # Easy-Design
-AI-based interior design recommendation system
 
-Problem Statement:
-Many people want to improve the look of their rooms, but they do not know where to start, what style fits their space, or how different furniture and decor choices will work together. Professional interior design help can be expensive, and many existing tools are either too complex, too costly, or not personalized enough for everyday users.
+Easy-Design is a full-stack interior design assistant that helps users explore room ideas, analyze room photos, find visually similar shopping matches, and save design progress in a personal dashboard.
+
+The app combines a guided design flow with AI-powered chat, image analysis, and room-shopping tools. Users can browse design styles, generate inspiration links for selected rooms and furniture, upload a room photo to detect objects, save product links to a room cart, and ask the AI chatbot for practical interior design advice.
+
+## Features
+
+- Landing page with project overview, hero section, workflow, and style previews.
+- Guided room design flow for Bedroom, Kitchen, Living Room, Bathroom, and Home Office.
+- Furniture and decor item selection for each room type.
+- Pinterest inspiration search generation based on room and selected items.
+- User signup, login, logout, JWT authentication, and session restore.
+- Dashboard with saved design history, uploaded room photos, and user stats.
+- Style guide with interior design styles, images, color palettes, and keywords.
+- AI chatbot for layout, furniture, color, lighting, material, and decor guidance.
+- Room photo upload with object detection and visual shopping matches.
+- Room cart for saving product links from detected objects.
+- AI-generated add-on suggestions based on room cart items.
+- MongoDB persistence with local file fallback for development reliability.
+
+## Tech Stack
+
+### Frontend
+
+- React
+- TypeScript
+- Vite
+- React Router
+- Tailwind CSS
+- Radix UI / shadcn-style components
+- lucide-react icons
+- framer-motion animations
+- Vitest
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT authentication
+- bcryptjs password hashing
+- dotenv
+- CORS
+
+### AI and Image Services
+
+- Gemini API for AI chatbot, cart suggestions, and optional object recovery.
+- Cloudinary for image upload and crop URLs.
+- Roboflow YOLO-World for room object detection.
+- Google Cloud Vision for fallback object/web detection.
+- SerpApi Google Lens for product and visual matches.
+- OpenRouter support for optional guided design assistant copy.
+
+## Project Structure
+
+```text
+Easy-Design/
+  backend/
+    config/          MongoDB connection and fallback status
+    data/            Room catalog and local JSON store
+    middleware/      Auth and optional-auth middleware
+    models/          Mongoose models
+    routes/          Express API routes
+    utils/           AI, room analysis, tokens, and recommendation helpers
+    server.js        Backend entry point
+
+  frontend/
+    src/
+      assets/        Interior images
+      components/    Reusable UI and feature components
+      hooks/         Custom React hooks
+      lib/           API clients and frontend utilities
+      pages/         App pages/routes
+      main.tsx       Frontend entry point
+```
+
+## Main Pages
+
+- `/` - Home page
+- `/analyze` - Guided room inspiration generator
+- `/styles` - Interior design style guide
+- `/room-shop` - Upload room photo and find object/product matches
+- `/room-cart` - Saved product links and AI add-on suggestions
+- `/ai-chatbot` - AI interior design chatbot
+- `/login` - User login
+- `/signup` - User registration
+- `/dashboard` - Saved designs and uploaded room history
+
+## Backend API Overview
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/health` | Backend and database status |
+| `POST /api/auth/register` | Create account |
+| `POST /api/auth/login` | Login |
+| `GET /api/auth/me` | Restore current user |
+| `GET /api/designs/catalog` | Room catalog |
+| `POST /api/designs/inspirations/search` | Generate inspiration links |
+| `GET /api/designs` | Saved design history |
+| `POST /api/chatbot/message` | AI chatbot response |
+| `GET /api/room-analysis/config` | Room analysis service status |
+| `POST /api/room-analysis/analyze` | Detect room objects and match products |
+| `GET /api/room-analysis/uploads` | Saved uploaded room photos |
+| `GET /api/room-analysis/cart` | Load room cart |
+| `PUT /api/room-analysis/cart` | Save room cart |
+| `DELETE /api/room-analysis/cart` | Clear room cart |
+| `POST /api/room-analysis/cart/suggestions` | Generate AI cart add-ons |
 
-There is a need for a simple and affordable platform that helps users explore room design ideas, discover suitable furniture and decor combinations, and gradually move toward AI-assisted recommendations based on their own space.
+## Local Setup
 
+### 1. Backend
 
-Objectives:
-To build a web-based platform that helps users explore room design ideas in a simple guided flow
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-To recommend room inspiration based on room type and selected furniture or decor items
+The backend runs on:
 
-To allow users to create accounts and save their design history for later use
+```text
+http://localhost:5000
+```
 
-To evolve the platform into an AI-assisted room analysis system using uploaded room images
+Health check:
 
-To provide an accessible and low-cost alternative for early-stage interior design planning
+```text
+http://localhost:5000/api/health
+```
 
+Create `backend/.env` with the variables you need:
 
-Technology Stack (MERN-Focused)
+```bash
+PORT=5000
+MONGO_URI=
+JWT_SECRET=
+JWT_EXPIRES_IN=30d
+CLIENT_URL=http://localhost:8080
+BCRYPT_SALT_ROUNDS=12
 
+GEMINI_KEY=
+GEMINI_CHAT_MODEL=gemini-2.5-flash
 
-Frontend (React)
+CLOUDINARY_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 
-React with Vite and TypeScript
+ROBOFLOW_PRIVATE_KEY=
+SERP_PRIVATE_KEY=
+GOOGLE_VISION_API_KEY=
+OPEN_ROUTER=
+```
 
-Tailwind CSS and shadcn/ui components
+If `MONGO_URI` is missing or unavailable, the backend falls back to a local JSON file store for development.
 
-React Router for page navigation
+### 2. Frontend
 
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Backend (Node.js & Express)
+The frontend runs on:
 
+```text
+http://localhost:8080
+```
 
-Node.js
+Optional frontend environment variable:
 
-Express.js
+```bash
+VITE_API_BASE_URL=http://localhost:5000/api
+```
 
-REST APIs 
+## Scripts
 
-JWT-based authentication
+### Frontend
 
+```bash
+npm run dev       # start Vite dev server
+npm run build     # build production frontend
+npm run preview   # preview production build
+npm run lint      # run ESLint
+npm run test      # run Vitest tests
+```
 
-Database (MongoDB)
+### Backend
 
+```bash
+npm run dev       # start backend with nodemon
+npm start         # start backend with node
+```
 
-AI & Image Processing
+## Notes
 
-Current status:
-
-The current build does not yet perform real computer vision or room-image analysis. Instead, it uses a guided recommendation flow where users choose a room type and preferred items, and the backend generates Pinterest inspiration searches from those selections.
-
-Planned next phase:
-
-Image upload support
-
-Room-photo analysis
-
-Color and object understanding
-
-Smarter recommendation generation using AI 
-
-
-Project Overview
-
-Easy-Design is a web application that helps users discover interior design inspiration for different room types. Instead of starting from a blank page, users choose a room, select the furniture or decor items they want, and receive curated inspiration links that help them explore layouts, styling ideas, and color directions.
-
-The platform also supports authentication and a personal dashboard. When users are signed in, their design searches are saved so they can revisit previous ideas later. This makes the current project a practical guided recommendation system, while also serving as the foundation for a future AI-powered room analysis product.
-
-
-Core Features
-
-User signup, login, logout, and session restore
-
-Room selection for multiple room categories
-
-Furniture and decor item selection inside each room flow
-
-Generated Pinterest inspiration links based on user choices
-
-Saved design history for logged-in users
-
-Responsive web interface with landing page, analyze page, styles page, and dashboard
-
-Backend API for auth, room catalog, inspiration generation, and history storage
-
-
-Local setup
-
-1. Create `backend/.env` from [`backend/.env.example`](/c:/Users/abina/OneDrive/Desktop/AbinavVSCode/Easy-Design/backend/.env.example).
-
-2. In MongoDB Atlas, create a database user and add your current IP address under Network Access.
-
-3. Paste your Atlas connection string into `backend/.env` as `MONGO_URI`.
-
-4. Start the backend with `cd backend` and `npm run dev`.
-
-5. Open `http://localhost:5000/api/health` and confirm you see `"status":"ok"` with `"persistence":"mongodb"`.
-
-
-System Workflow
-
-User opens the web app and explores the landing page or design flow
-
-User selects a room type such as bedroom, kitchen, living room, bathroom, or office
-
-User chooses the furniture or decor items they want in that room
-
-Frontend sends the selection to the Node.js and Express backend
-
-Backend builds relevant inspiration results and returns them to the frontend
-
-If the user is logged in, the design session is stored in MongoDB
-
-Frontend displays inspiration cards and the user can revisit saved searches from the dashboard
-
-
-Identified Stakeholders
-
-
-1. End Users (Students, homeowners, renters, and anyone redesigning a room)
-
-Need quick, affordable design inspiration without hiring a professional at the start.
-
-
-2. Interior Designers or Mentors
-
-Can use the platform as a lightweight idea-generation or consultation support tool.
-
-
-3. Project Team / System Administrators
-
-Responsible for maintaining the frontend, backend, database, and future AI pipeline.
+- Room inspiration search works with only the backend and room catalog.
+- AI chatbot requires a Gemini API key.
+- Room photo analysis requires Cloudinary and Roboflow, with SerpApi or Google Vision for better matching.
+- Logged-in users can save design searches, room uploads, and room cart data.
+- Guest users can still browse, use some flows, and keep a temporary room cart in browser storage.
