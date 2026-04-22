@@ -49,12 +49,25 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/designs", designRoutes);
-app.use("/api/room-analysis", roomAnalysisRoutes);
+app.get("/health", (_req, res) => {
+  res.redirect(307, "/api/health");
+});
+
+function mountApiRoutes(prefix) {
+  app.use(`${prefix}/auth`, authRoutes);
+  app.use(`${prefix}/designs`, designRoutes);
+  app.use(`${prefix}/room-analysis`, roomAnalysisRoutes);
+}
+
+mountApiRoutes("/api");
+mountApiRoutes("");
 
 app.get("/", (_req, res) => {
   res.json({ message: "EasyDesign backend is running." });
+});
+
+app.use((_req, res) => {
+  res.status(404).json({ message: "API route not found." });
 });
 
 async function startServer() {

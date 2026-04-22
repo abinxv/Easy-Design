@@ -38,13 +38,15 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
   const contentType = response.headers.get("content-type") || "";
   const isJson = contentType.includes("application/json");
-  const payload: ApiErrorPayload | T | null = isJson ? await response.json() : null;
+  const payload: ApiErrorPayload | T | string | null = isJson ? await response.json() : await response.text();
 
   if (!response.ok) {
     const message =
       (payload as ApiErrorPayload | null)?.message ||
       (payload as ApiErrorPayload | null)?.error ||
-      "Something went wrong.";
+      (typeof payload === "string" && payload.trim()
+        ? `Request failed with ${response.status}: ${payload.trim().slice(0, 160)}`
+        : `Request failed with ${response.status}.`);
     throw new Error(message);
   }
 

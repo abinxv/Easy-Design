@@ -76,7 +76,7 @@ function activateLocalFallback(message, { log = false } = {}) {
 
   if (log) {
     console.error("Database connection error:", message);
-    console.error("Starting backend with local file storage fallback in backend/data/local-db.json.");
+    console.error("Starting backend with local file storage fallback.");
   }
 }
 
@@ -136,7 +136,7 @@ async function connectDB() {
 
   if (!process.env.MONGO_URI) {
     const missingUriMessage =
-      "MONGO_URI is missing. Falling back to local file storage in backend/data/local-db.json.";
+      "MONGO_URI is missing. Falling back to local file storage.";
     activateLocalFallback(missingUriMessage);
     console.warn(dbState.lastError);
     return false;

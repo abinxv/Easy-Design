@@ -1,9 +1,15 @@
 const fs = require("fs/promises");
+const os = require("os");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const { randomUUID } = require("crypto");
 
-const LOCAL_STORE_PATH = path.join(__dirname, "local-db.json");
+const LOCAL_STORE_PATH =
+  process.env.LOCAL_STORE_PATH ||
+  path.join(
+    process.env.VERCEL ? os.tmpdir() : __dirname,
+    process.env.VERCEL ? "easy-design-local-db.json" : "local-db.json"
+  );
 
 function createDefaultStore() {
   return {
