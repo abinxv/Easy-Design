@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "/api" : "http://localhost:5000/api");
 
 type RequestOptions = {
   method?: string;
@@ -29,7 +30,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     });
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new Error("Cannot reach the backend API. Make sure the backend is running on http://localhost:5000 and that CORS/database startup issues are resolved.");
+      throw new Error(`Cannot reach the backend API at ${API_BASE_URL}. Make sure the backend is running and that CORS/database startup issues are resolved.`);
     }
 
     throw error;

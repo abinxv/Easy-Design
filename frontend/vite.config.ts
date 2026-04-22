@@ -12,7 +12,10 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(
+    Boolean,
+  ),
+  base: process.env.VITE_BASE_PATH || "/Easy-Design",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
